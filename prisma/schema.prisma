@@ -1,0 +1,211 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String?
+  image         String?
+  role          Role      @default(CUSTOMER)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  bookingsAsCustomer Booking[]        @relation("customer")
+  residentProfile    ResidentProfile?
+  reviews            Review[] // New relation
+
+  @@map("users")
+}
+
+model ResidentProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  bio         String? @db.Text
+  description String? @db.Text
+
+  // Basic Info
+  title             String? // e.g., "Licensed Massage Therapist"
+  location          String? // City/Area they serve
+  yearsOfExperience Int?
+  certifications    String? @db.Text // JSON array of certifications
+  languages         String? // e.g., "English, Spanish, French"
+
+  // Pricing & Booking
+  price          Float   @default(50)
+  bookingEnabled Boolean @default(true)
+  approved       Boolean @default(false)
+  featured       Boolean @default(false)
+
+  // New fields
+  instantBooking     Boolean @default(false) // Auto-confirm bookings
+  cancellationPolicy String? @db.Text
+  businessHours      String? // JSON for custom hours
+
+  // Social & Contact
+  website     String?
+  phone       String?
+  socialLinks String? @db.Text // JSON for social media
+
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  availabilities Availability[]
+  bookings       Booking[]
+  payments       Payment[]
+  images         ResidentImage[]
+  services       Service[] // New relation
+  reviews        Review[] // New relation
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("resident_profiles")
+}
+
+model ResidentImage {
+  id         String          @id @default(cuid())
+  url        String
+  residentId String
+  resident   ResidentProfile @relation(fields: [residentId], references: [id], onDelete: Cascade)
+
+  @@index([residentId], map: "resident_images_residentId_fkey")
+  @@map("resident_images")
+}
+
+model Availability {
+  id         String          @id @default(cuid())
+  residentId String
+  dayOfWeek  Int             @db.SmallInt
+  startTime  String
+  endTime    String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  resident   ResidentProfile @relation(fields: [residentId], references: [id], onDelete: Cascade)
+
+  @@unique([residentId, dayOfWeek])
+  @@map("availabilities")
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  residentId String
+  customerId String
+  date       DateTime      @db.Date
+  timeSlot   String
+  status     BookingStatus @default(PENDING)
+  notes      String?
+  totalPrice Float? // Total for all services
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  customer User             @relation("customer", fields: [customerId], references: [id], onDelete: Cascade)
+  resident ResidentProfile  @relation(fields: [residentId], references: [id], onDelete: Cascade)
+  payment  Payment?
+  services BookingService[] // New relation
+  review   Review?
+
+  @@unique([residentId, date, timeSlot])
+  @@index([customerId])
+  @@map("bookings")
+}
+
+model BookingService {
+  id        String @id @default(cuid())
+  bookingId String
+  serviceId String
+  quantity  Int    @default(1)
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([bookingId, serviceId])
+  @@index([serviceId])
+  @@map("booking_services")
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  residentId String
+  customerId String
+  bookingId  String?  @unique
+  rating     Int // 1-5
+  comment    String?  @db.Text
+  response   String?  @db.Text // Resident's response
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  booking  Booking?        @relation(fields: [bookingId], references: [id], onDelete: Cascade) // ADD THIS LINE
+  resident ResidentProfile @relation(fields: [residentId], references: [id], onDelete: Cascade)
+  customer User            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([residentId])
+  @@index([customerId])
+  @@map("reviews")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  residentId  String
+  name        String // e.g., "60-min Deep Tissue Massage"
+  description String?  @db.Text
+  duration    Int // in minutes
+  price       Float
+  enabled     Boolean  @default(true)
+  order       Int      @default(0) // For sorting
+  category    String? // e.g., "Massage", "Spa Treatment"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  resident ResidentProfile  @relation(fields: [residentId], references: [id], onDelete: Cascade)
+  bookings BookingService[] // Many-to-many with bookings
+
+  @@index([residentId])
+  @@map("services")
+}
+
+model Payment {
+  id               String          @id @default(cuid())
+  bookingId        String          @unique
+  residentId       String
+  stripePaymentId  String
+  amount           Float
+  platformFee      Float
+  residentEarnings Float
+  status           PaymentStatus   @default(PENDING)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  booking          Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  resident         ResidentProfile @relation(fields: [residentId], references: [id], onDelete: Cascade)
+
+  @@index([residentId], map: "payments_residentId_fkey")
+  @@map("payments")
+}
+
+enum Role {
+  CUSTOMER
+  RESIDENT
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
