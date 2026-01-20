@@ -102,10 +102,10 @@ export default async function ResidentProfilePage({
 
           {/* Profile Info */}
           <div className="card mb-8">
-            <h1 className="text-4xl font-bold mb-2">{resident.user.name}</h1>
+            {/* <h1 className="text-4xl font-bold mb-2">{resident.user.name}</h1>
             {resident.businessType !== 'PRODUCTS' && (
               <p className="text-xl text-gray-600 mb-6">${resident.price} per hour</p>
-            )}
+            )} */}
 
             {resident.bio && (
               <div className="mb-6">

@@ -210,15 +210,7 @@ export default async function ResidentsPage() {
 
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        {resident.businessType !== "PRODUCTS" && (
-                          <div className="text-sm">
-                            <span className="text-gray-500">from </span>
-                            <span className="text-gray-900 font-semibold">
-                              ${resident.price}
-                            </span>
-                            <span className="text-gray-500">/hr</span>
-                          </div>
-                        )}
+                        
                         <span className="text-sm text-gray-600 flex items-center gap-1 group-hover:gap-2 transition-all ml-auto">
                           View Profile
                           <ChevronRight size={16} />
