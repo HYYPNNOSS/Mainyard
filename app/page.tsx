@@ -45,7 +45,15 @@ export default function MainyardLanding() {
 
   const fetchCategories = async () => {
     try {
+
       const response = await fetch('/api/categories');
+
+      if (!response.ok) {
+        console.error('Categories API error:', response.status);
+        setCategories([]);
+        return;
+      }
+  
       const data = await response.json();
       setCategories(data.categories || []);
     } catch (error) {
@@ -158,10 +166,10 @@ export default function MainyardLanding() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className={`pt-20 ${isCustomer ? "pb-12" : "pb-20"} px-6`}>
+      <section className={`pt-20 ${isCustomer ? "pb-8" : "pb-20"} px-6`}>
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-light text-gray-900 mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               {heroContent.title}
             </h1>
             <p className="text-xl text-gray-600 mb-8">
@@ -239,34 +247,35 @@ export default function MainyardLanding() {
               </div>
 
               {/* Category Filter */}
-              {categories.length > 0 && (
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-gray-600 font-medium">Category:</span>
-                  <button
-                    onClick={() => setSelectedCategory('all')}
-                    className={`px-6 py-2 rounded-full transition ${
-                      selectedCategory === 'all'
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    All
-                  </button>
-                  {categories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`px-6 py-2 rounded-full transition ${
-                        selectedCategory === category
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              )}
+{categories.length > 0 && (
+  <div className="flex items-center gap-3 flex-wrap">
+    <span className="text-gray-600 font-medium">Category:</span>
+    <button
+      onClick={() => setSelectedCategory('all')}
+      className={`px-6 py-2 rounded-full transition ${
+        selectedCategory === 'all'
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      All
+    </button>
+    {categories.map((category) => (
+      <button
+        key={category.id}  // CHANGED: was just 'category'
+        onClick={() => setSelectedCategory(category.id)}  // CHANGED: was 'category'
+        className={`px-6 py-2 rounded-full transition flex items-center gap-2 ${
+          selectedCategory === category.id  // CHANGED: was 'category'
+            ? 'bg-gray-900 text-white'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        }`}
+      >
+        <span>{category.type === 'SERVICE' ? '🛎️' : '🛍️'}</span>
+        {category.name}  {/* CHANGED: was just 'category' */}
+      </button>
+    ))}
+  </div>
+)}
             </div>
 
             {/* Professionals Grid */}
@@ -281,7 +290,7 @@ export default function MainyardLanding() {
                 {residents.map((resident) => (
                   <a
                     key={resident.id}
-                    href={`/professional/${resident.slug}`}
+                    href={`/resident/${resident.slug}`}
                     className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-900 hover:shadow-xl transition-all duration-300"
                   >
                     {/* Image */}
@@ -340,18 +349,24 @@ export default function MainyardLanding() {
                       </div>
 
                       {/* Categories */}
-                      {resident.categories && resident.categories.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {resident.categories.slice(0, 3).map((cat, idx) => (
-                            <span
-                              key={idx}
-                              className="px-3 py-1 bg-gray-50 text-gray-700 text-xs rounded-full"
-                            >
-                              {cat}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+{resident.categories && resident.categories.length > 0 && (
+  <div className="flex flex-wrap gap-2 mb-4">
+    {resident.categories.slice(0, 3).map((cat) => (  // CHANGED: cat is now an object
+      <span
+        key={cat.id}  // CHANGED: was idx
+        className="px-3 py-1 bg-gray-50 text-gray-700 text-xs rounded-full flex items-center gap-1"
+      >
+        <span>{cat.type === 'SERVICE' ? '🛎️' : '🛍️'}</span>
+        {cat.name}  {/* CHANGED: was just cat */}
+      </span>
+    ))}
+    {resident.categories.length > 3 && (
+      <span className="px-3 py-1 bg-gray-50 text-gray-700 text-xs rounded-full">
+        +{resident.categories.length - 3}
+      </span>
+    )}
+  </div>
+)}
 
                       {/* CTA */}
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -376,38 +391,38 @@ export default function MainyardLanding() {
 
       {/* How It Works - Only for customers */}
       {isCustomer && (
-        <section className="py-20 px-6 bg-gray-50">
+        <section className="py-32 px-6 bg-white">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl font-light text-gray-900 mb-4 text-center">How It Works</h2>
-            <p className="text-center text-gray-600 mb-16">Simple, secure, and seamless</p>
+            <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-3 text-center tracking-tight">How It Works</h2>
+            <p className="text-center text-xl text-gray-500 mb-24">Simple, secure, and seamless</p>
 
-            <div className="grid md:grid-cols-3 gap-12">
+            <div className="grid md:grid-cols-3 gap-16 md:gap-20">
               <div className="text-center">
-                <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-6 shadow-sm mx-auto">
-                  <span className="font-medium text-2xl text-gray-900">1</span>
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
+                  1
                 </div>
-                <h3 className="text-xl font-medium mb-3">Browse & Discover</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Browse & Discover</h3>
+                <p className="text-gray-500 leading-relaxed text-lg">
                   Explore curated professionals offering services and products tailored to your needs.
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-6 shadow-sm mx-auto">
-                  <span className="font-medium text-2xl text-gray-900">2</span>
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
+                  2
                 </div>
-                <h3 className="text-xl font-medium mb-3">Book or Purchase</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Book or Purchase</h3>
+                <p className="text-gray-500 leading-relaxed text-lg">
                   Schedule services at convenient times or add products to cart and checkout securely.
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-6 shadow-sm mx-auto">
-                  <span className="font-medium text-2xl text-gray-900">3</span>
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
+                  3
                 </div>
-                <h3 className="text-xl font-medium mb-3">Experience & Enjoy</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Experience & Enjoy</h3>
+                <p className="text-gray-500 leading-relaxed text-lg">
                   Meet for your service or receive your product. All payments are processed automatically.
                 </p>
               </div>
@@ -417,23 +432,30 @@ export default function MainyardLanding() {
       )}
 
       {/* Testimonials */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-32 px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-light text-gray-900 mb-4 text-center">What People Say</h2>
-          <p className="text-center text-gray-600 mb-16">Real experiences from our community</p>
+          <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-3 text-center tracking-tight">What People Say</h2>
+          <p className="text-center text-xl text-gray-500 mb-24">Real experiences from our community</p>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 rounded-2xl p-8">
-                <div className="flex gap-1 mb-4">
+              <div key={index} className="bg-white rounded-2xl p-8 md:p-10 hover:shadow-lg transition-shadow duration-300 border border-gray-100/50">
+                <div className="flex gap-0.5 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={18} fill="currentColor" className="text-yellow-400" />
+                    <Star key={i} size={16} fill="currentColor" className="text-amber-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">"{testimonial.text}"</p>
-                <div>
-                  <div className="font-medium text-gray-900">{testimonial.name}</div>
-                  <div className="text-sm text-gray-600">{testimonial.role}</div>
+                <p className="text-gray-700 mb-8 leading-relaxed text-base md:text-lg font-normal">
+                  "{testimonial.text}"
+                </p>
+                <div className="flex items-center gap-3 pt-6 border-t border-gray-100">
+                  <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white font-semibold text-sm">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900 text-sm">{testimonial.name}</div>
+                    <div className="text-xs text-gray-500">{testimonial.role}</div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -441,21 +463,22 @@ export default function MainyardLanding() {
         </div>
       </section>
 
+
       {/* FAQ */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-32 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-light text-gray-900 mb-16 text-center">
-            Common Questions
+          <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-24 text-center tracking-tight">
+            Frequently Asked Questions
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             {getFAQs().map((faq, index) => (
-              <details key={index} className="bg-white rounded-xl p-6 group cursor-pointer">
-                <summary className="font-medium text-gray-900 flex items-center justify-between">
+              <details key={index} className="bg-white border-b border-gray-200 py-6 group cursor-pointer">
+                <summary className="font-semibold text-gray-900 flex items-center justify-between text-lg list-none">
                   {faq.q}
-                  <ChevronRight className="group-open:rotate-90 transition flex-shrink-0 ml-4" size={20} />
+                  <ChevronRight className="group-open:rotate-90 transition-transform flex-shrink-0 ml-4 text-gray-400" size={20} />
                 </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">{faq.a}</p>
+                <p className="mt-6 text-gray-500 leading-relaxed text-lg pr-8">{faq.a}</p>
               </details>
             ))}
           </div>
