@@ -8,51 +8,47 @@ import { formatDate, generateTimeSlots, getDayOfWeek } from "@/lib/utils";
 export async function createBooking(
   residentId: string,
   date: string,
-  timeSlot: string
+  timeSlot: string,
+  serviceIds: string[] // Changed to accept multiple services
 ) {
   const session = await auth();
-
+  
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
   }
 
-  if (session.user.role === "RESIDENT") {
-    throw new Error("Residents cannot book");
-  }
-
-  // Check if resident exists and is available
-  const resident = await prisma.residentProfile.findUnique({
-    where: { id: residentId },
-    include: { user: true, availabilities: true },
-  });
-
-  if (!resident || !resident.bookingEnabled) {
-    throw new Error("Resident not available for booking");
-  }
-
-  // Check if booking already exists
-  const existingBooking = await prisma.booking.findUnique({
+  // Calculate total price from selected services
+  const services = await prisma.service.findMany({
     where: {
-      residentId_date_timeSlot: {
-        residentId,
-        date: new Date(date),
-        timeSlot,
-      },
+      id: { in: serviceIds },
+      residentId,
+      enabled: true,
     },
   });
 
-  if (existingBooking) {
-    throw new Error("This time slot is already booked");
-  }
+  const totalPrice = services.reduce((sum, service) => sum + service.price, 0);
 
-  // Create booking
   const booking = await prisma.booking.create({
     data: {
       residentId,
       customerId: session.user.id,
       date: new Date(date),
       timeSlot,
+      totalPrice,
       status: "PENDING",
+      services: {
+        create: serviceIds.map(serviceId => ({
+          serviceId,
+          quantity: 1,
+        })),
+      },
+    },
+    include: {
+      services: {
+        include: {
+          service: true,
+        },
+      },
     },
   });
 

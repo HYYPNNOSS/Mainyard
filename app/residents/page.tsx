@@ -87,7 +87,7 @@ export default async function ResidentsPage() {
                 return (
                   <Link
                     key={resident.id}
-                    href={`/residents/${resident.slug}`}
+                    href={`/resident/${resident.slug}`}
                     className="group bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300"
                   >
                     {/* Image Container */}
