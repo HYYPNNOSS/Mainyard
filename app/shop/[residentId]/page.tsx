@@ -56,7 +56,7 @@ export default function ShopPage({ params }: ShopPageProps) {
       setResidentId(id);
 
       try {
-        const response = await fetch(`/api/residents/${id}`);
+        const response = await fetch(`/api/residence/${id}`);
         
         if (!response.ok) {
           console.error("Failed to fetch resident:", response.status);
