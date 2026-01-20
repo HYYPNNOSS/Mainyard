@@ -19,7 +19,19 @@ export async function GET(
           },
         },
         images: true,
-        services: true,
+        services: {
+          include: {
+            category: true, // ADD THIS
+          },
+        },
+        products: { // ADD THIS for products
+          where: { enabled: true },
+          include: {
+            category: true,
+            images: true,
+          },
+        },
+        categories: true, 
         reviews: {
           include: {
             customer: {

@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { name, description, duration, price, category, enabled } = body;
+    const { name, description, duration, price, categoryId, enabled } = body;
 
     // Validation
     if (!name || !duration || !price) {
@@ -55,6 +55,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (categoryId) {
+      const category = await prisma.category.findFirst({
+        where: {
+          id: categoryId,
+          residentId: user.residentProfile.id,
+          type: 'SERVICE',
+        },
+      });
+    
+      if (!category) {
+        return NextResponse.json(
+          { error: 'Invalid category or category does not belong to you' },
+          { status: 400 }
+        );
+      }
+    }
+    
+
     // Get the highest order value for this resident's services
     const maxOrder = await prisma.service.findFirst({
       where: { residentId: user.residentProfile.id },
@@ -70,11 +88,15 @@ export async function POST(request: NextRequest) {
         description: description || null,
         duration,
         price,
-        category: category || null,
+        categoryId: categoryId || null, 
         enabled: enabled ?? true,
         order: (maxOrder?.order ?? -1) + 1
-      }
+      },
+      include: {
+        category: true, 
+      },
     });
+    
 
     return NextResponse.json(
       { 
@@ -119,6 +141,9 @@ export async function GET(request: NextRequest) {
 
     const services = await prisma.service.findMany({
       where: { residentId: user.residentProfile.id },
+      include: {
+        category: true,
+      },
       orderBy: { order: 'asc' }
     });
 

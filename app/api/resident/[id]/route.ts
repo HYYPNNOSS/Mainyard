@@ -10,7 +10,7 @@ export async function GET(
 
     const resident = await prisma.residentProfile.findUnique({
       where: { id },
-      include: { user: true, availabilities: true },
+      include: { user: true, availabilities: true, categories: true },
     });
 
     if (!resident || !resident.approved) {

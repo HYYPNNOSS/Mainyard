@@ -23,6 +23,7 @@ export default function EditResidentPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
+  const [businessType, setBusinessType] = useState<"SERVICES" | "PRODUCTS" | "BOTH">("SERVICES");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -40,6 +41,7 @@ export default function EditResidentPage() {
           setDescription(profileData.description || "");
           setPrice(profileData.price.toString());
           setBookingEnabled(profileData.bookingEnabled);
+          setBusinessType(profileData.businessType); 
         }
       } catch (error) {
         console.error("Failed to load profile:", error);
@@ -64,6 +66,8 @@ export default function EditResidentPage() {
         description,
         price: parseFloat(price),
         bookingEnabled,
+        businessType,
+
       });
       setMessage("Profile updated successfully!");
       setTimeout(() => router.push("/dashboard/resident"), 2000);
@@ -76,6 +80,7 @@ export default function EditResidentPage() {
   }
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -266,7 +271,21 @@ export default function EditResidentPage() {
             </div>
           </div>
         </div>
-
+        <div>
+  <label className="label">Business Type</label>
+  <select
+    value={businessType}
+    onChange={(e) => setBusinessType(e.target.value as any)}
+    className="input"
+  >
+    <option value="SERVICES">Services Only</option>
+    <option value="PRODUCTS">Products Only</option>
+    <option value="BOTH">Both Services & Products</option>
+  </select>
+  <p className="text-sm text-gray-500 mt-1">
+    Changing this will affect which features you have access to
+  </p>
+</div>
         <div>
           <label className="label">Bio</label>
           <textarea

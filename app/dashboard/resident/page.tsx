@@ -16,6 +16,8 @@ export default function ResidentDashboard() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+const [products, setProducts] = useState<any[]>([]);
   const [stats, setStats] = useState({
     totalEarnings: 0,
     avgRating: 0,
@@ -47,7 +49,8 @@ export default function ResidentDashboard() {
         // Set services and reviews immediately from profile data
         setServices(profileData?.services || []);
         setReviews(profileData?.reviews || []);
-        
+        setCategories(profileData?.categories || []); // ADD THIS
+        setProducts(profileData?.products || []); // ADD THIS
         // Only fetch bookings if profile exists
         if (profileData) {
           const bookingsData = await getResidentBookings(session?.user?.id || "");
@@ -118,7 +121,26 @@ export default function ResidentDashboard() {
   const tabs = [
     { id: "overview", label: "Overview", icon: "📊" },
     { id: "profile", label: "Profile", icon: "👤" },
-    { id: "services", label: "Services", icon: "🛎️", count: services.length },
+    
+    // Show categories for all business types
+    { id: "categories", label: "Categories", icon: "📁", count: profile?.categories?.length || 0 },
+    
+    // Conditionally show services tab
+    ...(profile?.businessType !== "PRODUCTS" ? [{
+      id: "services", 
+      label: "Services", 
+      icon: "🛎️", 
+      count: services.length 
+    }] : []),
+    
+    // Conditionally show products tab
+    ...(profile?.businessType !== "SERVICES" ? [{
+      id: "products", 
+      label: "Products", 
+      icon: "🛍️", 
+      count: profile?.products?.length || 0 
+    }] : []),
+    
     { id: "bookings", label: "Bookings", icon: "📅", count: bookings.length },
     { id: "reviews", label: "Reviews", icon: "⭐", count: reviews.length },
     { id: "earnings", label: "Earnings", icon: "💰" },
@@ -127,6 +149,7 @@ export default function ResidentDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
+      
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
@@ -539,7 +562,9 @@ export default function ResidentDashboard() {
                           <div className="flex items-start justify-between mb-3">
                             <div>
                               <h3 className="text-xl font-bold text-gray-900">{service.name}</h3>
-                              <p className="text-sm text-gray-500">{service.category}</p>
+                              {service.category && (
+  <p className="text-sm text-gray-500">{service.category.name}</p>
+)}
                             </div>
                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                               service.enabled ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
@@ -586,7 +611,150 @@ export default function ResidentDashboard() {
               </div>
             )}
     
+    {/* Products Tab */}
+{activeTab === "products" && profile?.businessType !== "SERVICES" && (
+  <div className="space-y-6">
+    <div className="flex justify-between items-center">
+      <h2 className="text-2xl font-bold">Your Products</h2>
+      <Link 
+        href="/dashboard/resident/products/new" 
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+      >
+        + Add New Product
+      </Link>
+    </div>
+
+    {products.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white rounded-lg shadow hover:shadow-lg transition">
+            {product.images?.[0] && (
+              <img src={product.images[0].url} alt={product.name} className="w-full h-48 object-cover rounded-t-lg" />
+            )}
+            <div className="p-6">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
+                  {product.category && (
+                    <p className="text-sm text-gray-500">{product.category.name}</p>
+                  )}
+                </div>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  product.enabled ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                }`}>
+                  {product.enabled ? "Active" : "Inactive"}
+                </span>
+              </div>
+              
+              <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+              
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-2xl font-bold text-blue-600">${product.price}</p>
+                  {product.trackInventory && (
+                    <p className="text-sm text-gray-500">Stock: {product.stock}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex space-x-2">
+                <Link 
+                  href={`/dashboard/resident/products/${product.id}/edit`} 
+                  className="flex-1 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition text-center font-medium"
+                >
+                  Edit
+                </Link>
+                <button className="flex-1 bg-gray-50 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition font-medium">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span className="text-3xl">🛍️</span>
+        </div>
+        <h3 className="text-xl font-bold mb-2">No Products Yet</h3>
+        <p className="text-gray-600 mb-6">Create your first product to start selling</p>
+        <Link 
+          href="/dashboard/resident/products/new" 
+          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+        >
+          Create First Product
+        </Link>
+      </div>
+    )}
+  </div>
+)}
             {/* Bookings Tab */}
+            {/* Categories Tab */}
+{activeTab === "categories" && (
+  <div className="space-y-6">
+    <div className="flex justify-between items-center">
+      <h2 className="text-2xl font-bold">Your Categories</h2>
+      <Link 
+        href="/dashboard/resident/categories/new" 
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+      >
+        + Add New Category
+      </Link>
+    </div>
+
+    {categories.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {categories.map((category) => (
+          <div key={category.id} className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-bold">{category.name}</h3>
+              <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                category.type === 'SERVICE' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+              }`}>
+                {category.type}
+              </span>
+            </div>
+            {category.description && (
+              <p className="text-sm text-gray-600 mb-4">{category.description}</p>
+            )}
+            <div className="flex gap-2">
+              <Link 
+                href={`/dashboard/resident/categories/${category.id}/edit`}
+                className="flex-1 text-center bg-blue-50 text-blue-600 px-3 py-2 rounded hover:bg-blue-100 text-sm font-medium"
+              >
+                Edit
+              </Link>
+              <button className="flex-1 bg-gray-50 text-gray-600 px-3 py-2 rounded hover:bg-gray-100 text-sm font-medium">
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span className="text-3xl">📁</span>
+        </div>
+        <h3 className="text-xl font-bold mb-2">No Categories Yet</h3>
+        <p className="text-gray-600 mb-6">Create categories to organize your {
+          profile?.businessType === 'SERVICES' ? 'services' : 
+          profile?.businessType === 'PRODUCTS' ? 'products' : 
+          'services and products'
+        }</p>
+        <Link 
+          href="/dashboard/resident/categories/new" 
+          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+        >
+          Create First Category
+        </Link>
+      </div>
+    )}
+  </div>
+)}
+
+
             {activeTab === "bookings" && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">

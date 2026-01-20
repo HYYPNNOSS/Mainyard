@@ -7,6 +7,7 @@ import { createResidentProfile } from "@/server/actions/residentActions";
 
 export default function ResidentSetupPage() {
   const { data: session } = useSession();
+  const [businessType, setBusinessType] = useState<"SERVICES" | "PRODUCTS" | "BOTH">("SERVICES");
   const router = useRouter();
   const [bio, setBio] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +25,7 @@ export default function ResidentSetupPage() {
         bio,
         description,
         price: parseFloat(price),
+        businessType
       });
 
       router.push("/dashboard/resident");
@@ -46,6 +48,25 @@ export default function ResidentSetupPage() {
           {error}
         </div>
       )}
+
+<div>
+  <label className="label">Business Type</label>
+  <select
+    value={businessType}
+    onChange={(e) => setBusinessType(e.target.value as any)}
+    className="input"
+    required
+  >
+    <option value="SERVICES">Services (Bookable appointments)</option>
+    <option value="PRODUCTS">Products (E-commerce store)</option>
+    <option value="BOTH">Both Services & Products</option>
+  </select>
+  <p className="text-sm text-gray-600 mt-2">
+    {businessType === "SERVICES" && "You'll be able to create bookable services and set your availability"}
+    {businessType === "PRODUCTS" && "You'll be able to create products to sell with inventory management"}
+    {businessType === "BOTH" && "You'll have access to both booking services and product management"}
+  </p>
+</div>
 
       <form onSubmit={handleSubmit} className="card space-y-6">
         <div>

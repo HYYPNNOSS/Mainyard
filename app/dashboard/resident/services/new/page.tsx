@@ -8,6 +8,8 @@ export default function NewServicePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [categories, setCategories] = useState<any[]>([]);
+const [selectedCategoryId, setSelectedCategoryId] = useState('');
   
   const [formData, setFormData] = useState({
     name: '',
@@ -45,7 +47,7 @@ export default function NewServicePage() {
           description: formData.description || null,
           duration: parseInt(formData.duration),
           price: parseFloat(formData.price),
-          category: formData.category || null,
+          categoryId: selectedCategoryId || null, // CHANGED from 'category'
           enabled: formData.enabled
         }),
       });
@@ -64,6 +66,27 @@ export default function NewServicePage() {
       setLoading(false);
     }
   };
+
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const response = await fetch('/api/resident/categories');
+        const data = await response.json();
+        
+        // Filter to only show SERVICE type categories
+        const serviceCategories = data.categories?.filter(
+          (cat: any) => cat.type === 'SERVICE'
+        ) || [];
+        
+        setCategories(serviceCategories);
+      } catch (error) {
+        console.error('Failed to load categories:', error);
+      }
+    }
+    
+    loadCategories();
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -148,25 +171,29 @@ export default function NewServicePage() {
         </div>
 
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Select a category</option>
-            <option value="Massage">Massage</option>
-            <option value="Spa Treatment">Spa Treatment</option>
-            <option value="Facial">Facial</option>
-            <option value="Body Treatment">Body Treatment</option>
-            <option value="Wellness">Wellness</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+  <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 mb-2">
+    Category
+  </label>
+  <div className="flex gap-2">
+    <select
+      id="categoryId"
+      value={selectedCategoryId}
+      onChange={(e) => setSelectedCategoryId(e.target.value)}
+      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    >
+      <option value="">Select a category (optional)</option>
+      {categories.map((cat) => (
+        <option key={cat.id} value={cat.id}>{cat.name}</option>
+      ))}
+    </select>
+    <Link
+      href="/dashboard/resident/categories/new"
+      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition whitespace-nowrap"
+    >
+      + New Category
+    </Link>
+  </div>
+</div>
 
         <div className="flex items-center">
           <input

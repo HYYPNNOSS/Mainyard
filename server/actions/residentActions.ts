@@ -8,6 +8,7 @@ export async function createResidentProfile(data: {
   bio?: string;
   description?: string;
   price: number;
+  businessType: any;
 }) {
   const session = await auth();
 
@@ -31,11 +32,11 @@ export async function createResidentProfile(data: {
       bio: data.bio,
       description: data.description,
       price: data.price,
+      businessType: data.businessType, 
       slug,
     },
   });
 
-  // Update user role to RESIDENT
   await prisma.user.update({
     where: { id: session.user.id },
     data: { role: "RESIDENT" },
@@ -44,11 +45,14 @@ export async function createResidentProfile(data: {
   return profile;
 }
 
+
 export async function updateResidentProfile(data: {
   bio?: string;
   description?: string;
   price?: number;
   bookingEnabled?: boolean;
+  businessType: any;
+
 }) {
   const session = await auth();
 
@@ -68,6 +72,7 @@ export async function updateResidentProfile(data: {
     where: { id: profile.id },
     data: {
       bio: data.bio ?? profile.bio,
+      businessType: data.businessType, 
       description: data.description ?? profile.description,
       price: data.price ?? profile.price,
       bookingEnabled:
@@ -218,8 +223,10 @@ export async function getResidentProfile() {
     include: {
       availabilities: true,
       images: true,
-      services: true,      // ADD THIS LINE
-      reviews: {           // ADD THIS BLOCK
+      products: true,
+      categories: true,
+      services: true,     
+      reviews: {          
         include: {
           customer: true
         }

@@ -3,23 +3,28 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import { Menu, X, User } from "lucide-react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  console.log(session)
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-light text-gray-900">
             Mainyard
           </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            <Link href="/residents" className="text-gray-700 hover:text-blue-600">
-              Browse Residents
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            <Link 
+              href="/residents" 
+              className="text-gray-600 hover:text-gray-900 transition text-sm"
+            >
+              Browse
             </Link>
 
             {session?.user ? (
@@ -27,7 +32,7 @@ export default function Navbar() {
                 {session.user.role === "RESIDENT" && (
                   <Link
                     href="/dashboard/resident"
-                    className="text-gray-700 hover:text-blue-600"
+                    className="text-gray-600 hover:text-gray-900 transition text-sm"
                   >
                     Dashboard
                   </Link>
@@ -36,78 +41,7 @@ export default function Navbar() {
                 {session.user.role === "ADMIN" && (
                   <Link
                     href="/admin"
-                    className="text-gray-700 hover:text-blue-600"
-                  >
-                    Admin
-                  </Link>
-                )}
-
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">{session.user.email}</span>
-                  <button
-                    onClick={() => signOut()}
-                    className="btn-secondary text-sm"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/signin" className="btn-secondary text-sm">
-                  Sign In
-                </Link>
-                <Link href="/auth/signup" className="btn-primary text-sm">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4 space-y-2">
-            <Link
-              href="/residents"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Browse Residents
-            </Link>
-
-            {session?.user ? (
-              <>
-                {session.user.role === "RESIDENT" && (
-                  <Link
-                    href="/dashboard/resident"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Dashboard
-                  </Link>
-                )}
-
-                {session.user.role === "ADMIN" && (
-                  <Link
-                    href="/admin"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="text-gray-600 hover:text-gray-900 transition text-sm"
                   >
                     Admin
                   </Link>
@@ -115,7 +49,81 @@ export default function Navbar() {
 
                 <button
                   onClick={() => signOut()}
-                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  className="text-gray-600 hover:text-gray-900 transition text-sm"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  href="/auth/signin" 
+                  className="text-gray-600 hover:text-gray-900 transition text-sm"
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  href="/auth/signup" 
+                  className="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-800 transition text-sm"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X size={24} className="text-gray-900" />
+            ) : (
+              <Menu size={24} className="text-gray-900" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-6 space-y-4 border-t border-gray-100">
+            <Link
+              href="/residents"
+              className="block text-gray-600 hover:text-gray-900 transition"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Browse
+            </Link>
+
+            {session?.user ? (
+              <>
+                {session.user.role === "RESIDENT" && (
+                  <Link
+                    href="/dashboard/resident"
+                    className="block text-gray-600 hover:text-gray-900 transition"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                )}
+
+                {session.user.role === "ADMIN" && (
+                  <Link
+                    href="/admin"
+                    className="block text-gray-600 hover:text-gray-900 transition"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                )}
+
+                <button
+                  onClick={() => {
+                    signOut();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left text-gray-600 hover:text-gray-900 transition"
                 >
                   Sign Out
                 </button>
@@ -124,13 +132,15 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/signin"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  className="block text-gray-600 hover:text-gray-900 transition"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="block px-4 py-2 text-blue-600 font-medium"
+                  className="block bg-gray-900 text-white px-6 py-3 rounded-full hover:bg-gray-800 transition text-center"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign Up
                 </Link>
