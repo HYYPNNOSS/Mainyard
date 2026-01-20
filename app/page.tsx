@@ -463,7 +463,7 @@ export default function MainyardLanding() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 px-6 bg-gray-900 text-white">
+      <section className="py-20 px-6 max-w-[1200px] rounded-[6px] mx-auto bg-gray-900 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-light mb-6">Ready to get started?</h2>
           <p className="text-gray-300 mb-8 text-lg">

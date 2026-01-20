@@ -11,7 +11,7 @@ export default function ResidentSetupPage() {
   const router = useRouter();
   const [bio, setBio] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("50");
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,7 +24,6 @@ export default function ResidentSetupPage() {
       await createResidentProfile({
         bio,
         description,
-        price: parseFloat(price),
         businessType
       });
 
@@ -93,18 +92,7 @@ export default function ResidentSetupPage() {
           />
         </div>
 
-        <div>
-          <label className="label">Hourly Rate ($)</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="input"
-            min="0"
-            step="0.01"
-            required
-          />
-        </div>
+        
 
         <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? "Creating Profile..." : "Create Profile"}

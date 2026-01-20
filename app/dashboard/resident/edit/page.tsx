@@ -64,7 +64,7 @@ export default function EditResidentPage() {
       await updateResidentProfile({
         bio,
         description,
-        price: parseFloat(price),
+       
         bookingEnabled,
         businessType,
 
@@ -308,18 +308,7 @@ export default function EditResidentPage() {
           />
         </div>
 
-        <div>
-          <label className="label">Hourly Rate ($)</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="input"
-            min="0"
-            step="0.01"
-            required
-          />
-        </div>
+       
 
         <div>
           <label className="flex items-center space-x-3 cursor-pointer">

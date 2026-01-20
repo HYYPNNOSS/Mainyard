@@ -44,7 +44,7 @@ model ResidentProfile {
   languages         String?
 
   // Pricing & Booking (for SERVICES type)
-  price          Float   @default(50)
+  price          Float?
   bookingEnabled Boolean @default(true)
   approved       Boolean @default(false)
   featured       Boolean @default(false)

@@ -7,7 +7,7 @@ import { generateSlug } from "@/lib/utils";
 export async function createResidentProfile(data: {
   bio?: string;
   description?: string;
-  price: number;
+  // REMOVE: price: number;
   businessType: any;
 }) {
   const session = await auth();
@@ -31,7 +31,7 @@ export async function createResidentProfile(data: {
       userId: session.user.id,
       bio: data.bio,
       description: data.description,
-      price: data.price,
+      // REMOVE: price: data.price,
       businessType: data.businessType, 
       slug,
     },
@@ -45,14 +45,12 @@ export async function createResidentProfile(data: {
   return profile;
 }
 
-
 export async function updateResidentProfile(data: {
   bio?: string;
   description?: string;
-  price?: number;
+  // REMOVE: price?: number;
   bookingEnabled?: boolean;
   businessType: any;
-
 }) {
   const session = await auth();
 
@@ -74,7 +72,7 @@ export async function updateResidentProfile(data: {
       bio: data.bio ?? profile.bio,
       businessType: data.businessType, 
       description: data.description ?? profile.description,
-      price: data.price ?? profile.price,
+      // REMOVE: price: data.price ?? profile.price,
       bookingEnabled:
         data.bookingEnabled !== undefined
           ? data.bookingEnabled
