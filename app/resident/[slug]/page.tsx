@@ -102,11 +102,6 @@ export default async function ResidentProfilePage({
 
           {/* Profile Info */}
           <div className="card mb-8">
-            {/* <h1 className="text-4xl font-bold mb-2">{resident.user.name}</h1>
-            {resident.businessType !== 'PRODUCTS' && (
-              <p className="text-xl text-gray-600 mb-6">${resident.price} per hour</p>
-            )} */}
-
             {resident.bio && (
               <div className="mb-6">
                 <h2 className="text-2xl font-bold mb-4">About</h2>
@@ -428,12 +423,12 @@ export default async function ResidentProfilePage({
                 <p className="text-center text-gray-600 text-sm font-medium">
                   Browse our products below
                 </p>
-                <a
-                  href="#offerings"
+                <Link
+                  href={`/shop/${resident.id}`}
                   className="btn-primary w-full text-center block"
                 >
-                  View All Products
-                </a>
+                  Shop Products
+                </Link>
               </div>
             )}
 
@@ -447,12 +442,12 @@ export default async function ResidentProfilePage({
                     Book a Service
                   </Link>
                 )}
-                <a
-                  href="#offerings"
+                <Link
+                  href={`/shop/${resident.id}`}
                   className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-semibold w-full text-center block"
                 >
                   Shop Products
-                </a>
+                </Link>
               </div>
             )}
 

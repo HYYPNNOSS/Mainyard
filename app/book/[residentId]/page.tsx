@@ -134,7 +134,7 @@ export default function BookingPage({ params }: BookingPageProps) {
         residentId, 
         selectedDate, 
         selectedSlot,
-        selectedServices // Pass selected services
+        selectedServices
       );
 
       // Create Stripe checkout session
