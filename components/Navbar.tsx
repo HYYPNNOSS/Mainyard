@@ -9,22 +9,23 @@ export default function Navbar() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white border-b-8 border-black sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-24">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-light text-gray-900">
-            Mainyard
+          <Link href="/" className="text-3xl font-black text-black uppercase tracking-tight">
+            OPENYARD
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <Link 
               href="/residents" 
-              className="text-gray-600 hover:text-gray-900 transition text-sm"
+              className="text-black hover:text-white hover:bg-black px-5 py-2.5 transition font-black uppercase text-sm tracking-wider border-4 border-transparent hover:border-black"
             >
-              Browse
+              BROWSE
             </Link>
 
             {session?.user ? (
@@ -32,41 +33,41 @@ export default function Navbar() {
                 {session.user.role === "RESIDENT" && (
                   <Link
                     href="/dashboard/resident"
-                    className="text-gray-600 hover:text-gray-900 transition text-sm"
+                    className="text-black hover:text-white hover:bg-black px-5 py-2.5 transition font-black uppercase text-sm tracking-wider border-4 border-transparent hover:border-black"
                   >
-                    Dashboard
+                    DASHBOARD
                   </Link>
                 )}
 
                 {session.user.role === "ADMIN" && (
                   <Link
                     href="/admin"
-                    className="text-gray-600 hover:text-gray-900 transition text-sm"
+                    className="text-black hover:text-white hover:bg-black px-5 py-2.5 transition font-black uppercase text-sm tracking-wider border-4 border-transparent hover:border-black"
                   >
-                    Admin
+                    ADMIN
                   </Link>
                 )}
 
                 <button
-                  onClick={() => signOut()}
-                  className="text-gray-600 hover:text-gray-900 transition text-sm"
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="text-black hover:text-white hover:bg-black px-5 py-2.5 transition font-black uppercase text-sm tracking-wider border-4 border-transparent hover:border-black"
                 >
-                  Sign Out
+                  SIGN OUT
                 </button>
               </>
             ) : (
               <>
                 <Link 
                   href="/auth/signin" 
-                  className="text-gray-600 hover:text-gray-900 transition text-sm"
+                  className="text-black hover:text-white hover:bg-black px-5 py-2.5 transition font-black uppercase text-sm tracking-wider border-4 border-transparent hover:border-black"
                 >
-                  Sign In
+                  SIGN IN
                 </Link>
                 <Link 
                   href="/auth/signup" 
-                  className="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-800 transition text-sm"
+                  className="bg-black text-white px-7 py-2.5 hover:bg-yellow-400 hover:text-black transition font-black uppercase text-sm tracking-wider border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 >
-                  Sign Up
+                  SIGN UP
                 </Link>
               </>
             )}
@@ -74,26 +75,26 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-3 border-4 border-black hover:bg-black hover:text-white transition"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X size={24} className="text-gray-900" />
+              <X size={24} strokeWidth={3} />
             ) : (
-              <Menu size={24} className="text-gray-900" />
+              <Menu size={24} strokeWidth={3} />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-6 space-y-4 border-t border-gray-100">
+          <div className="md:hidden py-6 space-y-4 border-t-4 border-black">
             <Link
               href="/residents"
-              className="block text-gray-600 hover:text-gray-900 transition"
+              className="block text-black hover:bg-black hover:text-white px-4 py-3 transition font-black uppercase text-sm tracking-wider border-4 border-black"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Browse
+              BROWSE
             </Link>
 
             {session?.user ? (
@@ -101,48 +102,48 @@ export default function Navbar() {
                 {session.user.role === "RESIDENT" && (
                   <Link
                     href="/dashboard/resident"
-                    className="block text-gray-600 hover:text-gray-900 transition"
+                    className="block text-black hover:bg-black hover:text-white px-4 py-3 transition font-black uppercase text-sm tracking-wider border-4 border-black"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Dashboard
+                    DASHBOARD
                   </Link>
                 )}
 
                 {session.user.role === "ADMIN" && (
                   <Link
                     href="/admin"
-                    className="block text-gray-600 hover:text-gray-900 transition"
+                    className="block text-black hover:bg-black hover:text-white px-4 py-3 transition font-black uppercase text-sm tracking-wider border-4 border-black"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Admin
+                    ADMIN
                   </Link>
                 )}
 
                 <button
                   onClick={() => {
-                    signOut();
+                    signOut({ callbackUrl: '/' });
                     setMobileMenuOpen(false);
                   }}
-                  className="block w-full text-left text-gray-600 hover:text-gray-900 transition"
+                  className="block w-full text-left text-black hover:bg-black hover:text-white px-4 py-3 transition font-black uppercase text-sm tracking-wider border-4 border-black"
                 >
-                  Sign Out
+                  SIGN OUT
                 </button>
               </>
             ) : (
               <>
                 <Link
                   href="/auth/signin"
-                  className="block text-gray-600 hover:text-gray-900 transition"
+                  className="block text-black hover:bg-black hover:text-white px-4 py-3 transition font-black uppercase text-sm tracking-wider border-4 border-black"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Sign In
+                  SIGN IN
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="block bg-gray-900 text-white px-6 py-3 rounded-full hover:bg-gray-800 transition text-center"
+                  className="block bg-black text-white px-4 py-3 hover:bg-yellow-400 hover:text-black transition font-black uppercase text-sm tracking-wider border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Sign Up
+                  SIGN UP
                 </Link>
               </>
             )}

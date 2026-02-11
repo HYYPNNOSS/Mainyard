@@ -29,65 +29,77 @@ export default function SignInPage() {
 
       if (result?.error) {
         setError("Invalid email or password");
+        setLoading(false);
       } else {
-        router.push(callbackUrl);
+        // Success - use window.location for full page refresh to update session
+        window.location.href = callbackUrl;
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
-    } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        <div className="card">
-          <h2 className="text-3xl font-bold text-center mb-6">Sign In</h2>
+        <div className="bg-white border-8 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-5xl font-black text-center mb-10 uppercase tracking-tight">
+            SIGN IN
+          </h2>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+            <div className="mb-6 p-4 bg-yellow-400 border-4 border-black text-black font-bold uppercase text-sm tracking-wide">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="label">Email</label>
+              <label className="block text-sm font-black uppercase tracking-widest mb-3">
+                EMAIL
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input"
+                className="w-full px-4 py-3 bg-white border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black"
                 required
+                autoComplete="email"
               />
             </div>
 
             <div>
-              <label className="label">Password</label>
+              <label className="block text-sm font-black uppercase tracking-widest mb-3">
+                PASSWORD
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input"
+                className="w-full px-4 py-3 bg-white border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black"
                 required
+                autoComplete="current-password"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full"
+              className="w-full bg-black text-white px-8 py-4 font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "SIGNING IN..." : "SIGN IN"}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
-              Don't have an account?{" "}
-              <Link href="/auth/signup" className="text-blue-600 hover:underline">
-                Sign up
+          <div className="mt-8 text-center border-t-4 border-black pt-6">
+            <p className="text-black font-bold uppercase text-sm tracking-wide">
+              DON'T HAVE AN ACCOUNT?{" "}
+              <Link 
+                href="/auth/signup" 
+                className="text-black underline decoration-4 hover:text-yellow-400 transition-colors font-black"
+              >
+                SIGN UP
               </Link>
             </p>
           </div>

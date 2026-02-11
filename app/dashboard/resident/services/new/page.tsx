@@ -10,7 +10,7 @@ export default function NewServicePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState<any[]>([]);
-const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
   
   const [formData, setFormData] = useState({
     name: '',
@@ -48,7 +48,7 @@ const [selectedCategoryId, setSelectedCategoryId] = useState('');
           description: formData.description || null,
           duration: parseInt(formData.duration),
           price: parseFloat(formData.price),
-          categoryId: selectedCategoryId || null, // CHANGED from 'category'
+          categoryId: selectedCategoryId || null,
           enabled: formData.enabled
         }),
       });
@@ -68,14 +68,12 @@ const [selectedCategoryId, setSelectedCategoryId] = useState('');
     }
   };
 
-
   useEffect(() => {
     async function loadCategories() {
       try {
         const response = await fetch('/api/resident/categories');
         const data = await response.json();
         
-        // Filter to only show SERVICE type categories
         const serviceCategories = data.categories?.filter(
           (cat: any) => cat.type === 'SERVICE'
         ) || [];
@@ -90,143 +88,204 @@ const [selectedCategoryId, setSelectedCategoryId] = useState('');
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Create New Service</h1>
-        <p className="text-gray-600 mt-2">Add a new service to your offerings</p>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="bg-black text-white border-b-8 border-black">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="flex items-center gap-6 mb-4">
+            <Link 
+              href="/dashboard/resident"
+              className="bg-white text-black p-3 hover:bg-yellow-400 transition-colors border-4 border-white"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={4}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </Link>
+            <div>
+              <h1 className="text-5xl font-black uppercase tracking-tight">CREATE NEW SERVICE</h1>
+              <p className="text-yellow-400 font-bold uppercase tracking-wider mt-2">ADD A NEW OFFERING TO YOUR PROFILE</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800">{error}</p>
-        </div>
-      )}
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Error Message */}
+        {error && (
+          <div className="mb-8 bg-yellow-400 border-8 border-black p-6">
+            <div className="flex items-center gap-4">
+              <svg className="h-8 w-8 text-black flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <p className="text-black font-black uppercase tracking-wide">{error}</p>
+            </div>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow rounded-lg p-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-            Service Name *
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="e.g., 60-min Deep Tissue Massage"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="bg-white border-8 border-black">
+          <div className="p-8 space-y-8">
+            {/* Service Name */}
+            <div>
+              <label htmlFor="name" className="block text-xs font-black uppercase tracking-widest mb-3">
+                SERVICE NAME *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="E.G., 60-MIN DEEP TISSUE MASSAGE"
+                className="w-full px-6 py-4 border-4 border-black font-bold text-lg uppercase placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={4}
-            placeholder="Describe what this service includes..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
+            {/* Description */}
+            <div className="border-t-4 border-black pt-8">
+              <label htmlFor="description" className="block text-xs font-black uppercase tracking-widest mb-3">
+                DESCRIPTION
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={6}
+                placeholder="DESCRIBE WHAT THIS SERVICE INCLUDES..."
+                className="w-full px-6 py-4 border-4 border-black font-medium placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 transition-colors resize-none"
+              />
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
-              Duration (minutes) *
-            </label>
-            <input
-              type="number"
-              id="duration"
-              name="duration"
-              required
-              min="1"
-              value={formData.duration}
-              onChange={handleChange}
-              placeholder="60"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            {/* Duration and Price */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t-4 border-black pt-8">
+              <div>
+                <label htmlFor="duration" className="block text-xs font-black uppercase tracking-widest mb-3">
+                  DURATION (MINUTES) *
+                </label>
+                <input
+                  type="number"
+                  id="duration"
+                  name="duration"
+                  required
+                  min="1"
+                  value={formData.duration}
+                  onChange={handleChange}
+                  placeholder="60"
+                  className="w-full px-6 py-4 border-4 border-black font-bold text-lg placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="price" className="block text-xs font-black uppercase tracking-widest mb-3">
+                  PRICE ($) *
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  required
+                  min="0.01"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="75.00"
+                  className="w-full px-6 py-4 border-4 border-black font-bold text-lg placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Category */}
+            <div className="border-t-4 border-black pt-8">
+              <label htmlFor="categoryId" className="block text-xs font-black uppercase tracking-widest mb-3">
+                CATEGORY
+              </label>
+              <div className="flex gap-4">
+                <select
+                  id="categoryId"
+                  value={selectedCategoryId}
+                  onChange={(e) => setSelectedCategoryId(e.target.value)}
+                  className="flex-1 px-6 py-4 border-4 border-black font-bold uppercase bg-white focus:outline-none focus:border-yellow-400 transition-colors appearance-none"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black' stroke-width='4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 1rem center',
+                    backgroundSize: '1.5rem'
+                  }}
+                >
+                  <option value="">SELECT A CATEGORY (OPTIONAL)</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name.toUpperCase()}</option>
+                  ))}
+                </select>
+                <Link
+                  href="/dashboard/resident/categories/new"
+                  className="px-6 py-4 bg-black text-white border-4 border-black hover:bg-yellow-400 hover:text-black transition-colors font-black uppercase tracking-wider whitespace-nowrap"
+                >
+                  + NEW CATEGORY
+                </Link>
+              </div>
+            </div>
+
+            {/* Enabled Checkbox */}
+            <div className="border-t-4 border-black pt-8">
+              <label className="flex items-center gap-4 cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="enabled"
+                    name="enabled"
+                    checked={formData.enabled}
+                    onChange={handleChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-8 h-8 border-4 border-black bg-white peer-checked:bg-black flex items-center justify-center transition-colors">
+                    {formData.enabled && (
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={4}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="text-sm font-black uppercase tracking-wider group-hover:text-yellow-400 transition-colors">
+                  SERVICE IS ACTIVE AND AVAILABLE FOR BOOKING
+                </span>
+              </label>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-              Price ($) *
-            </label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              required
-              min="0.01"
-              step="0.01"
-              value={formData.price}
-              onChange={handleChange}
-              placeholder="75.00"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+          {/* Action Buttons */}
+          <div className="border-t-8 border-black bg-white p-8">
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-black text-white py-6 px-8 font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:shadow-none"
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center gap-3">
+                    <svg className="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    CREATING...
+                  </span>
+                ) : (
+                  'CREATE SERVICE'
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="px-8 py-6 border-4 border-black font-black uppercase tracking-wider text-black hover:bg-black hover:text-white focus:outline-none transition-colors"
+              >
+                CANCEL
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div>
-  <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 mb-2">
-    Category
-  </label>
-  <div className="flex gap-2">
-    <select
-      id="categoryId"
-      value={selectedCategoryId}
-      onChange={(e) => setSelectedCategoryId(e.target.value)}
-      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-    >
-      <option value="">Select a category (optional)</option>
-      {categories.map((cat) => (
-        <option key={cat.id} value={cat.id}>{cat.name}</option>
-      ))}
-    </select>
-    <Link
-      href="/dashboard/resident/categories/new"
-      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition whitespace-nowrap"
-    >
-      + New Category
-    </Link>
-  </div>
-</div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="enabled"
-            name="enabled"
-            checked={formData.enabled}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="enabled" className="ml-2 block text-sm text-gray-700">
-            Service is active and available for booking
-          </label>
-        </div>
-
-        <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {loading ? 'Creating...' : 'Create Service'}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

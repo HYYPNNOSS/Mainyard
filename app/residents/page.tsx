@@ -26,52 +26,51 @@ export default async function ResidentsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header Section */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-5xl font-light text-gray-900 mb-3">
-            Discover Professionals
+      <div className="bg-yellow-400 border-b-8 border-black">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <h1 className="text-7xl md:text-8xl font-black text-black mb-6 uppercase tracking-tight leading-[0.9]">
+            DISCOVER PROFESSIONALS
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl">
-            Browse our curated marketplace of talented professionals. 
-            From services to products, find exactly what you need.
+          <p className="text-xl text-black max-w-3xl font-bold uppercase tracking-wide leading-tight">
+            BROWSE OUR CURATED MARKETPLACE OF TALENTED PROFESSIONALS /// FROM SERVICES TO PRODUCTS /// FIND EXACTLY WHAT YOU NEED
           </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         {residents.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="text-center py-32 border-8 border-black bg-yellow-400">
+            <div className="w-24 h-24 bg-black border-4 border-black flex items-center justify-center mx-auto mb-8">
               <svg
-                className="w-8 h-8 text-gray-400"
+                className="w-12 h-12 text-yellow-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                strokeWidth={3}
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
                   d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">
-              No professionals available
+            <h3 className="text-3xl font-black text-black mb-4 uppercase tracking-tight">
+              NO PROFESSIONALS AVAILABLE
             </h3>
-            <p className="text-gray-600">
-              Check back soon for new listings!
+            <p className="text-black font-bold uppercase tracking-wider">
+              CHECK BACK SOON FOR NEW LISTINGS!
             </p>
           </div>
         ) : (
           <>
             {/* Results Count */}
-            <div className="mb-8">
-              <p className="text-sm text-gray-600">
-                {residents.length} {residents.length === 1 ? 'professional' : 'professionals'} available
+            <div className="mb-12 border-b-4 border-black pb-6">
+              <p className="text-lg font-black uppercase tracking-widest">
+                {residents.length} {residents.length === 1 ? 'PROFESSIONAL' : 'PROFESSIONALS'} AVAILABLE
               </p>
             </div>
 
@@ -88,29 +87,29 @@ export default async function ResidentsPage() {
                   <Link
                     key={resident.id}
                     href={`/resident/${resident.slug}`}
-                    className="group bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300"
+                    className="group bg-white border-4 border-black hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all overflow-hidden"
                   >
                     {/* Image Container */}
-                    <div className="relative h-56 overflow-hidden bg-gray-100">
+                    <div className="relative h-72 overflow-hidden bg-gray-100 border-b-4 border-black">
                       {resident.images?.[0]?.url ? (
                         <Image
                           src={resident.images[0].url}
                           alt={resident.user.name || "Professional"}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-full h-full flex items-center justify-center bg-gray-200">
                           <svg
-                            className="w-12 h-12 text-gray-300"
+                            className="w-16 h-16 text-black"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
+                            strokeWidth={3}
                           >
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              strokeWidth={2}
                               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                             />
                           </svg>
@@ -118,77 +117,78 @@ export default async function ResidentsPage() {
                       )}
 
                       {/* Business Type Badge */}
-                      <div className="absolute top-3 left-3">
+                      <div className="absolute top-4 left-4">
                         {resident.businessType === "SERVICES" && (
-                          <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            🛎️ Services
+                          <div className="bg-white text-black px-4 py-2 border-4 border-black text-xs font-black uppercase tracking-widest">
+                            SERVICES
                           </div>
                         )}
                         {resident.businessType === "PRODUCTS" && (
-                          <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            🛍️ Products
+                          <div className="bg-white text-black px-4 py-2 border-4 border-black text-xs font-black uppercase tracking-widest">
+                            PRODUCTS
                           </div>
                         )}
                         {resident.businessType === "BOTH" && (
-                          <div className="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            ✨ Both
+                          <div className="bg-white text-black px-4 py-2 border-4 border-black text-xs font-black uppercase tracking-widest">
+                            SERVICES & PRODUCTS
                           </div>
                         )}
                       </div>
 
                       {/* Featured Badge */}
                       {resident.featured && (
-                        <div className="absolute top-3 right-3 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                          <Star size={12} fill="currentColor" />
-                          Featured
+                        <div className="absolute top-4 right-4 bg-yellow-400 text-black px-4 py-2 border-4 border-black text-xs font-black uppercase tracking-widest flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                          <Star size={14} fill="currentColor" strokeWidth={3} />
+                          FEATURED
                         </div>
                       )}
                     </div>
 
                     {/* Content */}
-                    <div className="p-5">
+                    <div className="p-6">
                       {/* Name and Title */}
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-gray-700 transition">
-                        {resident.user.name || "Unknown"}
+                      <h3 className="text-2xl font-black text-black mb-1 uppercase tracking-tight">
+                        {resident.user.name || "UNKNOWN"}
                       </h3>
                       
                       {resident.title && (
-                        <p className="text-sm text-gray-600 font-medium mb-3">
+                        <p className="text-sm text-black font-bold uppercase mb-4 tracking-wider">
                           {resident.title}
                         </p>
                       )}
 
                       {/* Bio */}
                       {resident.bio && (
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                        <p className="text-sm text-gray-700 mb-5 line-clamp-2 leading-relaxed">
                           {resident.bio}
                         </p>
                       )}
 
                       {/* Meta Info */}
-                      <div className="space-y-2 mb-4">
+                      <div className="space-y-2 mb-5 pb-5 border-b-2 border-black">
                         {resident.location && (
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <MapPin size={14} className="flex-shrink-0" />
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase tracking-wide">
+                            <MapPin size={14} className="flex-shrink-0" strokeWidth={3} />
                             <span>{resident.location}</span>
                           </div>
                         )}
                         {resident.yearsOfExperience && (
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <Award size={14} className="flex-shrink-0" />
-                            <span>{resident.yearsOfExperience} years experience</span>
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase tracking-wide">
+                            <Award size={14} className="flex-shrink-0" strokeWidth={3} />
+                            <span>{resident.yearsOfExperience} YEARS</span>
                           </div>
                         )}
                         {avgRating && (
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase tracking-wide">
                             <Star
                               size={14}
                               fill="currentColor"
-                              className="text-yellow-400 flex-shrink-0"
+                              className="flex-shrink-0"
+                              strokeWidth={3}
                             />
                             <span>
-                              {avgRating.toFixed(1)} ({ratings.length}{" "}
-                              {ratings.length === 1 ? "review" : "reviews"})
+                              {avgRating.toFixed(1)} · {ratings.length}{" "}
+                              {ratings.length === 1 ? "REVIEW" : "REVIEWS"}
                             </span>
                           </div>
                         )}
@@ -200,20 +200,19 @@ export default async function ResidentsPage() {
                           {resident.categories.map((cat) => (
                             <span
                               key={cat.id}
-                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                              className="px-3 py-1.5 bg-white text-black text-xs font-black uppercase tracking-wider border-2 border-black"
                             >
-                              {cat.name}
+                              {cat.name.toUpperCase()}
                             </span>
                           ))}
                         </div>
                       )}
 
                       {/* Footer */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        
-                        <span className="text-sm text-gray-600 flex items-center gap-1 group-hover:gap-2 transition-all ml-auto">
-                          View Profile
-                          <ChevronRight size={16} />
+                      <div className="flex items-center justify-between pt-4">
+                        <span className="text-sm text-black font-black uppercase tracking-wider flex items-center gap-2 ml-auto">
+                          VIEW PROFILE
+                          <ChevronRight size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                         </span>
                       </div>
                     </div>

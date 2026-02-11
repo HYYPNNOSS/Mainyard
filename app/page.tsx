@@ -6,17 +6,15 @@ export default function MainyardLanding() {
   const [residents, setResidents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [businessType, setBusinessType] = useState('all'); // all, SERVICES, PRODUCTS, BOTH
+  const [businessType, setBusinessType] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   
-  // Mock session - replace with actual authentication
-  const userRole = "CUSTOMER"; // Change to RESIDENT or ADMIN to test
+  const userRole = "CUSTOMER";
   const isResident = userRole === "RESIDENT";
   const isAdmin = userRole === "ADMIN";
   const isCustomer = !userRole || userRole === "CUSTOMER";
 
-  // Fetch residents and categories
   useEffect(() => {
     if (isCustomer) {
       fetchResidents();
@@ -45,15 +43,12 @@ export default function MainyardLanding() {
 
   const fetchCategories = async () => {
     try {
-
       const response = await fetch('/api/categories');
-
       if (!response.ok) {
         console.error('Categories API error:', response.status);
         setCategories([]);
         return;
       }
-  
       const data = await response.json();
       setCategories(data.categories || []);
     } catch (error) {
@@ -71,22 +66,22 @@ export default function MainyardLanding() {
   const getHeroContent = () => {
     if (isResident) {
       return {
-        title: "Your Marketplace Dashboard",
+        title: "YOUR MARKETPLACE DASHBOARD",
         description: "Manage your services, products, bookings, and orders all in one place.",
-        cta: "Go to Dashboard"
+        cta: "GO TO DASHBOARD"
       };
     }
     if (isAdmin) {
       return {
-        title: "Platform Administration",
+        title: "PLATFORM ADMINISTRATION",
         description: "Oversee professionals, products, bookings, and ensure quality across the marketplace.",
-        cta: "Go to Admin Panel"
+        cta: "GO TO ADMIN PANEL"
       };
     }
     return {
-      title: "Discover Local Talent",
+      title: "DISCOVER LOCAL TALENT",
       description: "Book services and shop products from curated professionals in your community.",
-      cta: "Explore Marketplace"
+      cta: "EXPLORE MARKETPLACE"
     };
   };
   
@@ -94,29 +89,29 @@ export default function MainyardLanding() {
 
   const getBusinessTypeLabel = (type) => {
     switch(type) {
-      case 'SERVICES': return 'Services';
-      case 'PRODUCTS': return 'Products';
-      case 'BOTH': return 'Services & Products';
+      case 'SERVICES': return 'SERVICES';
+      case 'PRODUCTS': return 'PRODUCTS';
+      case 'BOTH': return 'SERVICES & PRODUCTS';
       default: return '';
     }
   };
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "Wellness Coach",
+      name: "SARAH JOHNSON",
+      role: "WELLNESS COACH",
       text: "Mainyard transformed how I run my business. I now offer both coaching sessions and wellness products in one place.",
       rating: 5
     },
     {
-      name: "Michael Chen",
-      role: "Fitness Professional",
+      name: "MICHAEL CHEN",
+      role: "FITNESS PROFESSIONAL",
       text: "The platform makes it easy to manage bookings and sell my nutrition products. Everything I need in one dashboard.",
       rating: 5
     },
     {
-      name: "Emma Davis",
-      role: "Beauty Specialist",
+      name: "EMMA DAVIS",
+      role: "BEAUTY SPECIALIST",
       text: "My clients love being able to book appointments and purchase skincare products seamlessly.",
       rating: 5
     }
@@ -126,38 +121,38 @@ export default function MainyardLanding() {
     if (isResident) {
       return [
         {
-          q: "Can I offer both services and products?",
+          q: "CAN I OFFER BOTH SERVICES AND PRODUCTS?",
           a: "Yes! You can choose to offer services only, products only, or both. Set your business type in your profile settings."
         },
         {
-          q: "How do payments work?",
+          q: "HOW DO PAYMENTS WORK?",
           a: "All payments are processed securely through Stripe. You receive earnings within 2-3 business days after a booking is completed or product is delivered."
         },
         {
-          q: "Can I create custom categories?",
+          q: "CAN I CREATE CUSTOM CATEGORIES?",
           a: "Absolutely! You can create custom categories for both your services and products to help organize your offerings."
         },
         {
-          q: "How do I manage inventory?",
+          q: "HOW DO I MANAGE INVENTORY?",
           a: "For products, you can enable inventory tracking, set stock levels, and receive low-stock alerts in your dashboard."
         }
       ];
     }
     return [
       {
-        q: "What can I find on Mainyard?",
+        q: "WHAT CAN I FIND ON MAINYARD?",
         a: "You can book professional services like coaching, wellness sessions, consultations, and shop physical or digital products from local professionals."
       },
       {
-        q: "How do I book a service?",
+        q: "HOW DO I BOOK A SERVICE?",
         a: "Browse professionals, select their service, check availability, and book directly. Payment is secure and processed automatically."
       },
       {
-        q: "Can I purchase products too?",
+        q: "CAN I PURCHASE PRODUCTS TOO?",
         a: "Yes! Many professionals offer products alongside their services. Simply add items to your cart and checkout securely."
       },
       {
-        q: "Are all professionals vetted?",
+        q: "ARE ALL PROFESSIONALS VETTED?",
         a: "Every professional undergoes verification including credential checks and quality reviews before joining the platform."
       }
     ];
@@ -166,148 +161,161 @@ export default function MainyardLanding() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className={`pt-20 ${isCustomer ? "pb-8" : "pb-20"} px-6`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {heroContent.title}
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              {heroContent.description}
-            </p>
-            {!isCustomer && (
-              <a 
-                href={getDashboardLink()}
-                className="inline-flex items-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-full hover:bg-gray-800 transition group"
-              >
-                {heroContent.cta}
-                <ChevronRight className="group-hover:translate-x-1 transition" size={20} />
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
+      <section
+  className={`relative pt-24 ${isCustomer ? "pb-12" : "pb-24"} px-6 border-b-8 border-black overflow-hidden`}
+  style={{
+    backgroundImage:
+      "linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.45)), url('https://images.unsplash.com/photo-1435575653489-b0873ec954e2?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+>
+  <div className="max-w-7xl mx-auto relative z-10">
+    <div className="max-w-4xl">
+      <h1 className="text-7xl md:text-8xl font-black text-white mb-8 leading-[0.9] uppercase tracking-tight">
+        {heroContent.title}
+      </h1>
 
-      {/* Marketplace Browse Section - Only for Customers */}
+      <p className="text-xl md:text-2xl text-white mb-12 leading-tight font-bold uppercase">
+        {heroContent.description}
+      </p>
+
+      {!isCustomer && (
+        <a
+          href={getDashboardLink()}
+          className="inline-flex items-center gap-4 bg-black text-white px-10 py-5 text-sm font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-colors border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+        >
+          {heroContent.cta}
+          <ChevronRight size={20} strokeWidth={3} />
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+
+      {/* Marketplace Browse Section */}
       {isCustomer && (
-        <section className="pb-20 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Search and Filter */}
-            <div className="mb-12 space-y-6">
+            <div className="mb-16 space-y-10">
               {/* Search Bar */}
               <div className="relative max-w-2xl">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-black" size={24} strokeWidth={3} />
                 <input
                   type="text"
-                  placeholder="Search professionals, services, or products..."
+                  placeholder="SEARCH PROFESSIONALS, SERVICES, OR PRODUCTS..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-6 py-4 rounded-full border border-gray-200 focus:outline-none focus:border-gray-900 transition"
+                  className="w-full pl-16 pr-6 py-5 bg-white border-4 border-black focus:outline-none focus:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-shadow text-base font-bold uppercase placeholder:text-gray-400"
                 />
               </div>
 
-              {/* Business Type Filter */}
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Filter size={20} />
-                  <span className="font-medium">Type:</span>
+              {/* Filters */}
+              <div className="space-y-8">
+                {/* Business Type Filter */}
+                <div className="flex items-start gap-6">
+                  <span className="text-sm uppercase tracking-widest text-black font-black pt-3 min-w-[100px]">TYPE:</span>
+                  <div className="flex gap-3 flex-wrap">
+                    <button
+                      onClick={() => setBusinessType('all')}
+                      className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-4 border-black transition-all ${
+                        businessType === 'all'
+                          ? 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                          : 'bg-white text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                      }`}
+                    >
+                      ALL
+                    </button>
+                    <button
+                      onClick={() => setBusinessType('SERVICES')}
+                      className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-4 border-black transition-all flex items-center gap-2 ${
+                        businessType === 'SERVICES'
+                          ? 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                          : 'bg-white text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                      }`}
+                    >
+                      <Calendar size={16} strokeWidth={3} />
+                      SERVICES
+                    </button>
+                    <button
+                      onClick={() => setBusinessType('PRODUCTS')}
+                      className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-4 border-black transition-all flex items-center gap-2 ${
+                        businessType === 'PRODUCTS'
+                          ? 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                          : 'bg-white text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                      }`}
+                    >
+                      <Package size={16} strokeWidth={3} />
+                      PRODUCTS
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => setBusinessType('all')}
-                  className={`px-6 py-2 rounded-full transition ${
-                    businessType === 'all'
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setBusinessType('SERVICES')}
-                  className={`px-6 py-2 rounded-full transition flex items-center gap-2 ${
-                    businessType === 'SERVICES'
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  <Calendar size={16} />
-                  Services
-                </button>
-                <button
-                  onClick={() => setBusinessType('PRODUCTS')}
-                  className={`px-6 py-2 rounded-full transition flex items-center gap-2 ${
-                    businessType === 'PRODUCTS'
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  <Package size={16} />
-                  Products
-                </button>
-              </div>
 
-              {/* Category Filter */}
-{categories.length > 0 && (
-  <div className="flex items-center gap-3 flex-wrap">
-    <span className="text-gray-600 font-medium">Category:</span>
-    <button
-      onClick={() => setSelectedCategory('all')}
-      className={`px-6 py-2 rounded-full transition ${
-        selectedCategory === 'all'
-          ? 'bg-gray-900 text-white'
-          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-      }`}
-    >
-      All
-    </button>
-    {categories.map((category) => (
-      <button
-        key={category.id}  // CHANGED: was just 'category'
-        onClick={() => setSelectedCategory(category.id)}  // CHANGED: was 'category'
-        className={`px-6 py-2 rounded-full transition flex items-center gap-2 ${
-          selectedCategory === category.id  // CHANGED: was 'category'
-            ? 'bg-gray-900 text-white'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-        }`}
-      >
-        <span>{category.type === 'SERVICE' ? '🛎️' : '🛍️'}</span>
-        {category.name}  {/* CHANGED: was just 'category' */}
-      </button>
-    ))}
-  </div>
-)}
+                {/* Category Filter */}
+                {categories.length > 0 && (
+                  <div className="flex items-start gap-6">
+                    <span className="text-sm uppercase tracking-widest text-black font-black pt-3 min-w-[100px]">CATEGORY:</span>
+                    <div className="flex gap-3 flex-wrap">
+                      <button
+                        onClick={() => setSelectedCategory('all')}
+                        className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-4 border-black transition-all ${
+                          selectedCategory === 'all'
+                            ? 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                            : 'bg-white text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                        }`}
+                      >
+                        ALL
+                      </button>
+                      {categories.map((category) => (
+                        <button
+                          key={category.id}
+                          onClick={() => setSelectedCategory(category.id)}
+                          className={`px-6 py-3 text-sm font-black uppercase tracking-wider border-4 border-black transition-all ${
+                            selectedCategory === category.id
+                              ? 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                              : 'bg-white text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                          }`}
+                        >
+                          {category.name.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Professionals Grid */}
             {loading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="bg-gray-50 rounded-2xl h-96 animate-pulse" />
+                  <div key={i} className="bg-gray-100 h-[500px] animate-pulse border-4 border-black" />
                 ))}
               </div>
             ) : residents.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {residents.map((resident) => (
                   <a
                     key={resident.id}
                     href={`/resident/${resident.slug}`}
-                    className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-900 hover:shadow-xl transition-all duration-300"
+                    className="group bg-white border-4 border-black hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all overflow-hidden"
                   >
                     {/* Image */}
-                    <div className="relative h-56 overflow-hidden bg-gray-100">
+                    <div className="relative h-72 overflow-hidden bg-gray-100 border-b-4 border-black">
                       <img
                         src={resident.image || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop'}
                         alt={resident.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       />
                       {resident.featured && (
-                        <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                          <Star size={14} fill="currentColor" />
-                          Featured
+                        <div className="absolute top-4 right-4 bg-yellow-400 text-black px-4 py-2 text-xs font-black uppercase tracking-widest border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                          FEATURED
                         </div>
                       )}
                       {resident.businessType && (
-                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-900">
+                        <div className="absolute bottom-4 left-4 bg-white text-black px-4 py-2 text-xs font-black uppercase tracking-widest border-4 border-black">
                           {getBusinessTypeLabel(resident.businessType)}
                         </div>
                       )}
@@ -315,64 +323,63 @@ export default function MainyardLanding() {
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-medium text-gray-900 mb-1 group-hover:text-gray-700 transition">
+                      <h3 className="text-2xl font-black text-black mb-1 uppercase">
                         {resident.name}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-3">{resident.title}</p>
+                      <p className="text-black text-sm mb-4 font-bold uppercase">{resident.title}</p>
                       
                       {resident.bio && (
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <p className="text-gray-700 text-sm mb-5 line-clamp-2 leading-relaxed">
                           {resident.bio}
                         </p>
                       )}
 
                       {/* Meta Info */}
-                      <div className="space-y-2 mb-4">
+                      <div className="space-y-2 mb-5 pb-5 border-b-2 border-black">
                         {resident.location && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <MapPin size={14} />
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase">
+                            <MapPin size={14} strokeWidth={3} />
                             <span>{resident.location}</span>
                           </div>
                         )}
                         {resident.yearsOfExperience && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <Award size={14} />
-                            <span>{resident.yearsOfExperience} years</span>
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase">
+                            <Award size={14} strokeWidth={3} />
+                            <span>{resident.yearsOfExperience} YEARS</span>
                           </div>
                         )}
                         {resident.rating && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <Star size={14} fill="currentColor" className="text-yellow-400" />
-                            <span>{resident.rating} ({resident.reviewCount} reviews)</span>
+                          <div className="flex items-center gap-2 text-xs text-black font-bold uppercase">
+                            <Star size={14} fill="currentColor" strokeWidth={3} />
+                            <span>{resident.rating} · {resident.reviewCount} REVIEWS</span>
                           </div>
                         )}
                       </div>
 
                       {/* Categories */}
-{resident.categories && resident.categories.length > 0 && (
-  <div className="flex flex-wrap gap-2 mb-4">
-    {resident.categories.slice(0, 3).map((cat) => (  // CHANGED: cat is now an object
-      <span
-        key={cat.id}  // CHANGED: was idx
-        className="px-3 py-1 bg-gray-50 text-gray-700 text-xs rounded-full flex items-center gap-1"
-      >
-        <span>{cat.type === 'SERVICE' ? '🛎️' : '🛍️'}</span>
-        {cat.name}  {/* CHANGED: was just cat */}
-      </span>
-    ))}
-    {resident.categories.length > 3 && (
-      <span className="px-3 py-1 bg-gray-50 text-gray-700 text-xs rounded-full">
-        +{resident.categories.length - 3}
-      </span>
-    )}
-  </div>
-)}
+                      {resident.categories && resident.categories.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {resident.categories.slice(0, 3).map((cat) => (
+                            <span
+                              key={cat.id}
+                              className="px-3 py-1.5 bg-white text-black text-xs font-black uppercase tracking-wider border-2 border-black"
+                            >
+                              {cat.name.toUpperCase()}
+                            </span>
+                          ))}
+                          {resident.categories.length > 3 && (
+                            <span className="px-3 py-1.5 bg-black text-white text-xs font-black uppercase tracking-wider border-2 border-black">
+                              +{resident.categories.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       {/* CTA */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="text-gray-900 font-medium flex items-center gap-2 group-hover:gap-3 transition-all">
-                          View Profile
-                          <ChevronRight size={18} />
+                      <div className="flex items-center justify-between pt-4">
+                        <span className="text-black font-black uppercase text-sm tracking-wider flex items-center gap-2">
+                          VIEW PROFILE
+                          <ChevronRight size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                         </span>
                       </div>
                     </div>
@@ -380,50 +387,52 @@ export default function MainyardLanding() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20">
-                <p className="text-xl text-gray-600 mb-2">No professionals found</p>
-                <p className="text-gray-500">Try adjusting your filters</p>
+              <div className="text-center py-32 border-8 border-black bg-yellow-400">
+                <p className="text-3xl text-black mb-2 font-black uppercase">NO PROFESSIONALS FOUND</p>
+                <p className="text-black font-bold uppercase tracking-wider">TRY ADJUSTING YOUR FILTERS</p>
               </div>
             )}
           </div>
         </section>
       )}
 
-      {/* How It Works - Only for customers */}
+      {/* How It Works */}
       {isCustomer && (
-        <section className="py-32 px-6 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-3 text-center tracking-tight">How It Works</h2>
-            <p className="text-center text-xl text-gray-500 mb-24">Simple, secure, and seamless</p>
+        <section className="py-24 px-6 bg-black text-white border-y-8 border-black">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-20">
+              <h2 className="text-6xl md:text-7xl font-black mb-4 uppercase tracking-tight">HOW IT WORKS</h2>
+              <p className="text-yellow-400 font-black uppercase tracking-widest text-lg">SIMPLE /// SECURE /// SEAMLESS</p>
+            </div>
 
-            <div className="grid md:grid-cols-3 gap-16 md:gap-20">
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
-                  1
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="border-4 border-white p-8 bg-black hover:bg-yellow-400 hover:text-black transition-colors group">
+                <div className="w-16 h-16 border-4 border-current flex items-center justify-center mb-6 text-2xl font-black">
+                  01
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Browse & Discover</h3>
-                <p className="text-gray-500 leading-relaxed text-lg">
-                  Explore curated professionals offering services and products tailored to your needs.
+                <h3 className="text-2xl font-black mb-4 uppercase tracking-tight">BROWSE & DISCOVER</h3>
+                <p className="leading-relaxed font-bold uppercase text-sm opacity-90">
+                  EXPLORE CURATED PROFESSIONALS OFFERING SERVICES AND PRODUCTS TAILORED TO YOUR NEEDS.
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
-                  2
+              <div className="border-4 border-white p-8 bg-black hover:bg-yellow-400 hover:text-black transition-colors group">
+                <div className="w-16 h-16 border-4 border-current flex items-center justify-center mb-6 text-2xl font-black">
+                  02
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Book or Purchase</h3>
-                <p className="text-gray-500 leading-relaxed text-lg">
-                  Schedule services at convenient times or add products to cart and checkout securely.
+                <h3 className="text-2xl font-black mb-4 uppercase tracking-tight">BOOK OR PURCHASE</h3>
+                <p className="leading-relaxed font-bold uppercase text-sm opacity-90">
+                  SCHEDULE SERVICES AT CONVENIENT TIMES OR ADD PRODUCTS TO CART AND CHECKOUT SECURELY.
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white mb-8 mx-auto font-semibold text-lg">
-                  3
+              <div className="border-4 border-white p-8 bg-black hover:bg-yellow-400 hover:text-black transition-colors group">
+                <div className="w-16 h-16 border-4 border-current flex items-center justify-center mb-6 text-2xl font-black">
+                  03
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-gray-900">Experience & Enjoy</h3>
-                <p className="text-gray-500 leading-relaxed text-lg">
-                  Meet for your service or receive your product. All payments are processed automatically.
+                <h3 className="text-2xl font-black mb-4 uppercase tracking-tight">EXPERIENCE & ENJOY</h3>
+                <p className="leading-relaxed font-bold uppercase text-sm opacity-90">
+                  MEET FOR YOUR SERVICE OR RECEIVE YOUR PRODUCT. ALL PAYMENTS ARE PROCESSED AUTOMATICALLY.
                 </p>
               </div>
             </div>
@@ -432,30 +441,27 @@ export default function MainyardLanding() {
       )}
 
       {/* Testimonials */}
-      <section className="py-32 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-3 text-center tracking-tight">What People Say</h2>
-          <p className="text-center text-xl text-gray-500 mb-24">Real experiences from our community</p>
+      <section className="py-24 px-6 bg-yellow-400">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-20">
+            <h2 className="text-6xl md:text-7xl font-black mb-4 uppercase tracking-tight">WHAT PEOPLE SAY</h2>
+            <p className="text-black font-black uppercase tracking-widest text-lg">REAL EXPERIENCES /// OUR COMMUNITY</p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 md:p-10 hover:shadow-lg transition-shadow duration-300 border border-gray-100/50">
-                <div className="flex gap-0.5 mb-6">
+              <div key={index} className="bg-white p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" className="text-amber-400" />
+                    <Star key={i} size={18} fill="currentColor" strokeWidth={0} className="text-black" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-8 leading-relaxed text-base md:text-lg font-normal">
-                  "{testimonial.text}"
+                <p className="text-black mb-8 leading-relaxed font-medium">
+                  {testimonial.text}
                 </p>
-                <div className="flex items-center gap-3 pt-6 border-t border-gray-100">
-                  <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white font-semibold text-sm">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 text-sm">{testimonial.name}</div>
-                    <div className="text-xs text-gray-500">{testimonial.role}</div>
-                  </div>
+                <div className="pt-6 border-t-4 border-black">
+                  <div className="font-black text-black text-sm uppercase tracking-wider mb-1">{testimonial.name}</div>
+                  <div className="text-xs text-black font-bold uppercase tracking-widest opacity-60">{testimonial.role}</div>
                 </div>
               </div>
             ))}
@@ -463,22 +469,21 @@ export default function MainyardLanding() {
         </div>
       </section>
 
-
       {/* FAQ */}
-      <section className="py-32 px-6 bg-white">
+      <section className="py-24 px-6 bg-white border-y-8 border-black">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-semibold text-gray-900 mb-24 text-center tracking-tight">
-            Frequently Asked Questions
+          <h2 className="text-6xl md:text-7xl font-black mb-20 uppercase tracking-tight">
+            QUESTIONS & ANSWERS
           </h2>
 
-          <div className="space-y-2">
+          <div className="space-y-0">
             {getFAQs().map((faq, index) => (
-              <details key={index} className="bg-white border-b border-gray-200 py-6 group cursor-pointer">
-                <summary className="font-semibold text-gray-900 flex items-center justify-between text-lg list-none">
+              <details key={index} className="border-b-4 border-black py-8 group cursor-pointer">
+                <summary className="font-black text-black flex items-center justify-between text-lg uppercase tracking-wide list-none">
                   {faq.q}
-                  <ChevronRight className="group-open:rotate-90 transition-transform flex-shrink-0 ml-4 text-gray-400" size={20} />
+                  <ChevronRight className="group-open:rotate-90 transition-transform flex-shrink-0 ml-8" size={24} strokeWidth={3} />
                 </summary>
-                <p className="mt-6 text-gray-500 leading-relaxed text-lg pr-8">{faq.a}</p>
+                <p className="mt-6 text-gray-700 leading-relaxed font-medium pr-12">{faq.a}</p>
               </details>
             ))}
           </div>
@@ -486,20 +491,20 @@ export default function MainyardLanding() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 px-6 max-w-[1200px] rounded-[6px] mx-auto bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-light mb-6">Ready to get started?</h2>
-          <p className="text-gray-300 mb-8 text-lg">
+      <section className="py-24 px-6 bg-black text-white border-t-8 border-black">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight">READY TO GET STARTED?</h2>
+          <p className="text-yellow-400 mb-12 font-black uppercase tracking-widest text-lg">
             {isCustomer 
-              ? "Join thousands discovering local talent and quality products"
-              : "Grow your business with our powerful platform"}
+              ? "JOIN THOUSANDS /// DISCOVER LOCAL TALENT"
+              : "GROW YOUR BUSINESS /// POWERFUL PLATFORM"}
           </p>
           <a 
             href={getDashboardLink()}
-            className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-full hover:bg-gray-100 transition group"
+            className="inline-flex items-center gap-4 bg-yellow-400 text-black px-10 py-5 text-sm font-black uppercase tracking-wider hover:bg-white transition-colors border-4 border-white shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]"
           >
-            {isCustomer ? "Explore Marketplace" : "Go to Dashboard"}
-            <ChevronRight className="group-hover:translate-x-1 transition" size={20} />
+            {isCustomer ? "EXPLORE MARKETPLACE" : "GO TO DASHBOARD"}
+            <ChevronRight size={20} strokeWidth={3} />
           </a>
         </div>
       </section>

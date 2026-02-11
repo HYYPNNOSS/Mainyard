@@ -12,7 +12,6 @@ export default function NewCategoryPage() {
   const [error, setError] = useState('');
   const [businessType, setBusinessType] = useState<'SERVICES' | 'PRODUCTS' | 'BOTH' | null>(null);
   
-  // Get type and returnTo from URL params
   const typeParam = searchParams.get('type') as 'SERVICE' | 'PRODUCT' | null;
   const returnTo = searchParams.get('returnTo');
   
@@ -23,7 +22,6 @@ export default function NewCategoryPage() {
     enabled: true
   });
 
-  // Load business type on mount
   useEffect(() => {
     async function loadBusinessType() {
       try {
@@ -31,7 +29,6 @@ export default function NewCategoryPage() {
         const data = await response.json();
         setBusinessType(data.businessType);
         
-        // If business type doesn't allow the selected type, adjust it
         if (data.businessType === 'SERVICES' && formData.type === 'PRODUCT') {
           setFormData(prev => ({ ...prev, type: 'SERVICE' }));
         } else if (data.businessType === 'PRODUCTS' && formData.type === 'SERVICE') {
@@ -81,7 +78,6 @@ export default function NewCategoryPage() {
         throw new Error(data.error || 'Failed to create category');
       }
 
-      // Redirect to returnTo URL if provided, otherwise go to dashboard
       if (returnTo) {
         router.push(returnTo);
       } else {
@@ -95,29 +91,28 @@ export default function NewCategoryPage() {
     }
   };
 
-  // Determine if type selection should be shown
   const canSelectType = businessType === 'BOTH';
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Create New Category</h1>
-        <p className="text-gray-600 mt-2">
-          Organize your {formData.type === 'SERVICE' ? 'services' : 'products'} with custom categories
+    <div className="max-w-3xl mx-auto px-6 py-16 bg-white">
+      <div className="border-8 border-black p-12 bg-black text-white mb-12">
+        <h1 className="text-6xl font-black uppercase tracking-tight mb-4">CREATE NEW CATEGORY</h1>
+        <p className="text-xl font-bold uppercase tracking-wide">
+          ORGANIZE YOUR {formData.type === 'SERVICE' ? 'SERVICES' : 'PRODUCTS'} WITH CUSTOM CATEGORIES
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800">{error}</p>
+        <div className="mb-8 p-6 bg-yellow-400 border-8 border-black">
+          <p className="font-black uppercase tracking-wide text-black">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow rounded-lg p-6">
+      <form onSubmit={handleSubmit} className="space-y-8 bg-white border-8 border-black p-8 mb-8">
         {/* Category Type */}
         <div>
-          <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
-            Category Type *
+          <label htmlFor="type" className="block text-sm font-black uppercase tracking-widest mb-4">
+            CATEGORY TYPE *
           </label>
           {canSelectType ? (
             <select
@@ -126,32 +121,32 @@ export default function NewCategoryPage() {
               required
               value={formData.type}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-5 py-4 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black uppercase bg-white"
             >
-              <option value="SERVICE">Service Category</option>
-              <option value="PRODUCT">Product Category</option>
+              <option value="SERVICE">SERVICE CATEGORY</option>
+              <option value="PRODUCT">PRODUCT CATEGORY</option>
             </select>
           ) : (
             <div>
-              <div className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
-                {formData.type === 'SERVICE' ? '🛎️ Service Category' : '🛍️ Product Category'}
+              <div className="w-full px-5 py-4 border-4 border-black bg-yellow-400 text-black font-black text-lg uppercase">
+                {formData.type === 'SERVICE' ? '🛎️ SERVICE CATEGORY' : '🛍️ PRODUCT CATEGORY'}
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Based on your business type: {businessType}
+              <p className="text-xs font-bold uppercase tracking-wide text-black mt-3 border-4 border-black bg-white p-3">
+                BASED ON YOUR BUSINESS TYPE: {businessType}
               </p>
             </div>
           )}
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs font-bold uppercase tracking-wide text-black mt-3 border-4 border-black bg-yellow-400 p-3">
             {formData.type === 'SERVICE' 
-              ? 'Use this to organize bookable services (e.g., "Massage Therapy", "Spa Treatments")'
-              : 'Use this to organize products for sale (e.g., "Essential Oils", "Skincare")'}
+              ? 'USE THIS TO ORGANIZE BOOKABLE SERVICES (E.G., "MASSAGE THERAPY", "SPA TREATMENTS")'
+              : 'USE THIS TO ORGANIZE PRODUCTS FOR SALE (E.G., "ESSENTIAL OILS", "SKINCARE")'}
           </p>
         </div>
 
         {/* Category Name */}
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-            Category Name *
+        <div className="border-t-4 border-black pt-8">
+          <label htmlFor="name" className="block text-sm font-black uppercase tracking-widest mb-4">
+            CATEGORY NAME *
           </label>
           <input
             type="text"
@@ -162,104 +157,124 @@ export default function NewCategoryPage() {
             onChange={handleChange}
             placeholder={
               formData.type === 'SERVICE' 
-                ? 'e.g., Deep Tissue Massage, Aromatherapy' 
-                : 'e.g., Organic Skincare, Massage Tools'
+                ? 'E.G., DEEP TISSUE MASSAGE, AROMATHERAPY' 
+                : 'E.G., ORGANIC SKINCARE, MASSAGE TOOLS'
             }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-5 py-4 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black placeholder:text-gray-400 placeholder:uppercase"
           />
         </div>
 
         {/* Description */}
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-            Description (Optional)
+        <div className="border-t-4 border-black pt-8">
+          <label htmlFor="description" className="block text-sm font-black uppercase tracking-widest mb-4">
+            DESCRIPTION (OPTIONAL)
           </label>
           <textarea
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows={3}
+            rows={4}
             placeholder={
               formData.type === 'SERVICE'
-                ? 'Describe what types of services are in this category...'
-                : 'Describe what types of products are in this category...'
+                ? 'DESCRIBE WHAT TYPES OF SERVICES ARE IN THIS CATEGORY...'
+                : 'DESCRIBE WHAT TYPES OF PRODUCTS ARE IN THIS CATEGORY...'
             }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-5 py-4 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-medium text-black resize-none placeholder:text-gray-400 placeholder:uppercase"
           />
-          <p className="text-xs text-gray-500 mt-1">
-            Help customers understand what's included in this category
+          <p className="text-xs font-bold uppercase tracking-wide text-black mt-3 border-4 border-black bg-yellow-400 p-3">
+            HELP CUSTOMERS UNDERSTAND WHAT'S INCLUDED IN THIS CATEGORY
           </p>
         </div>
 
         {/* Enabled Checkbox */}
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="enabled"
-            name="enabled"
-            checked={formData.enabled}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="enabled" className="text-sm text-gray-700">
-            Category is active and visible
+        <div className="border-t-4 border-black pt-8">
+          <label className="flex items-center gap-4 cursor-pointer p-4 border-4 border-black hover:bg-yellow-400 transition-colors">
+            <input
+              type="checkbox"
+              id="enabled"
+              name="enabled"
+              checked={formData.enabled}
+              onChange={handleChange}
+              className="w-6 h-6 border-4 border-black accent-black"
+            />
+            <span className="text-black font-black uppercase tracking-wider">
+              CATEGORY IS ACTIVE AND VISIBLE
+            </span>
           </label>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-4 pt-4">
+        <div className="flex gap-4 pt-8 border-t-4 border-black">
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 bg-black text-white px-8 py-5 font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Creating Category...' : 'Create Category'}
+            {loading ? 'CREATING CATEGORY...' : 'CREATE CATEGORY'}
           </button>
           <button
             type="button"
             onClick={() => returnTo ? router.push(returnTo) : router.back()}
-            className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+            className="flex-1 bg-white text-black px-8 py-5 font-black uppercase tracking-wider hover:bg-gray-100 transition-colors border-4 border-black"
           >
-            Cancel
+            CANCEL
           </button>
         </div>
       </form>
 
       {/* Example Categories */}
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-blue-900 mb-2">
-          💡 Example {formData.type === 'SERVICE' ? 'Service' : 'Product'} Categories
+      <div className="bg-yellow-400 border-8 border-black p-8 mb-6">
+        <h3 className="text-xl font-black uppercase tracking-tight text-black mb-6 border-b-4 border-black pb-4">
+          💡 EXAMPLE {formData.type === 'SERVICE' ? 'SERVICE' : 'PRODUCT'} CATEGORIES
         </h3>
         {formData.type === 'SERVICE' ? (
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• <strong>Massage Therapy:</strong> Deep Tissue, Swedish, Hot Stone</li>
-            <li>• <strong>Spa Treatments:</strong> Facials, Body Wraps, Scrubs</li>
-            <li>• <strong>Aromatherapy:</strong> Essential Oil Massages, Diffusion Sessions</li>
-            <li>• <strong>Wellness:</strong> Meditation, Yoga, Reiki</li>
+          <ul className="space-y-3 text-black">
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">MASSAGE THERAPY:</span> DEEP TISSUE, SWEDISH, HOT STONE
+            </li>
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">SPA TREATMENTS:</span> FACIALS, BODY WRAPS, SCRUBS
+            </li>
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">AROMATHERAPY:</span> ESSENTIAL OIL MASSAGES, DIFFUSION SESSIONS
+            </li>
+            <li className="font-bold">
+              • <span className="font-black uppercase">WELLNESS:</span> MEDITATION, YOGA, REIKI
+            </li>
           </ul>
         ) : (
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• <strong>Essential Oils:</strong> Lavender, Peppermint, Eucalyptus</li>
-            <li>• <strong>Skincare:</strong> Moisturizers, Cleansers, Serums</li>
-            <li>• <strong>Massage Tools:</strong> Rollers, Heating Pads, Massage Balls</li>
-            <li>• <strong>Wellness Supplements:</strong> Vitamins, Herbs, Teas</li>
+          <ul className="space-y-3 text-black">
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">ESSENTIAL OILS:</span> LAVENDER, PEPPERMINT, EUCALYPTUS
+            </li>
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">SKINCARE:</span> MOISTURIZERS, CLEANSERS, SERUMS
+            </li>
+            <li className="font-bold border-b-4 border-black pb-3">
+              • <span className="font-black uppercase">MASSAGE TOOLS:</span> ROLLERS, HEATING PADS, MASSAGE BALLS
+            </li>
+            <li className="font-bold">
+              • <span className="font-black uppercase">WELLNESS SUPPLEMENTS:</span> VITAMINS, HERBS, TEAS
+            </li>
           </ul>
         )}
       </div>
 
       {/* Info Box */}
-      <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <div className="flex items-start">
-          <svg className="w-5 h-5 text-gray-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-          </svg>
-          <div className="text-sm text-gray-600">
-            <p className="font-medium text-gray-900 mb-1">About Categories</p>
-            <p>
-              Categories help organize your {formData.type === 'SERVICE' ? 'services' : 'products'} and 
-              make it easier for customers to find what they're looking for. You can create as many categories 
-              as you need and assign multiple {formData.type === 'SERVICE' ? 'services' : 'products'} to each category.
+      <div className="bg-white border-8 border-black p-8">
+        <div className="flex items-start gap-6">
+          <div className="w-12 h-12 bg-black flex items-center justify-center flex-shrink-0">
+            <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="font-black text-xl uppercase tracking-tight text-black mb-4">ABOUT CATEGORIES</p>
+            <p className="font-bold uppercase tracking-wide text-black leading-relaxed">
+              CATEGORIES HELP ORGANIZE YOUR {formData.type === 'SERVICE' ? 'SERVICES' : 'PRODUCTS'} AND 
+              MAKE IT EASIER FOR CUSTOMERS TO FIND WHAT THEY'RE LOOKING FOR. YOU CAN CREATE AS MANY CATEGORIES 
+              AS YOU NEED AND ASSIGN MULTIPLE {formData.type === 'SERVICE' ? 'SERVICES' : 'PRODUCTS'} TO EACH CATEGORY.
             </p>
           </div>
         </div>

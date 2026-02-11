@@ -61,58 +61,58 @@ export default async function ResidentProfilePage({
   }
 
   const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2">
           {/* Images */}
           <div className="mb-8">
             {resident.images && resident.images.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {resident.images.map((image) => (
                   <div
                     key={image.id}
-                    className="relative w-full h-64 bg-gray-200 rounded-lg overflow-hidden"
+                    className="relative w-full h-72 bg-gray-100 border-8 border-black overflow-hidden"
                   >
                     <Image
                       src={image.url}
                       alt={`${resident.user.name} - Image ${image.id}`}
                       fill
-                      className="object-cover"
+                      className="object-cover grayscale"
                     />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="w-full h-64 bg-gray-300 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500">No images available</span>
+              <div className="w-full h-72 bg-yellow-400 border-8 border-black flex items-center justify-center">
+                <span className="text-black font-black uppercase tracking-widest">NO IMAGES AVAILABLE</span>
               </div>
             )}
           </div>
 
           {/* Profile Info */}
-          <div className="card mb-8">
+          <div className="bg-white border-8 border-black p-8 mb-8">
             {resident.bio && (
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold mb-4">About</h2>
-                <p className="text-gray-700 whitespace-pre-wrap">{resident.bio}</p>
+              <div className="mb-8 pb-8 border-b-4 border-black">
+                <h2 className="text-4xl font-black mb-6 uppercase tracking-tight">ABOUT</h2>
+                <p className="text-black font-medium leading-relaxed whitespace-pre-wrap">{resident.bio}</p>
               </div>
             )}
 
             {resident.description && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Details</h2>
-                <p className="text-gray-700 whitespace-pre-wrap">
+                <h2 className="text-4xl font-black mb-6 uppercase tracking-tight">DETAILS</h2>
+                <p className="text-black font-medium leading-relaxed whitespace-pre-wrap">
                   {resident.description}
                 </p>
               </div>
@@ -121,11 +121,11 @@ export default async function ResidentProfilePage({
 
           {/* Categories & Offerings */}
           {(resident.categories.length > 0 || resident.services.length > 0 || resident.products.length > 0) && (
-            <div className="card mb-8" id="offerings">
-              <h2 className="text-2xl font-bold mb-4">
-                {resident.businessType === 'SERVICES' ? 'Services' : 
-                 resident.businessType === 'PRODUCTS' ? 'Products' : 
-                 'Our Offerings'}
+            <div className="bg-white border-8 border-black p-8 mb-8" id="offerings">
+              <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">
+                {resident.businessType === 'SERVICES' ? 'SERVICES' : 
+                 resident.businessType === 'PRODUCTS' ? 'PRODUCTS' : 
+                 'OUR OFFERINGS'}
               </h2>
               
               {/* Show Categories with their items */}
@@ -136,40 +136,40 @@ export default async function ResidentProfilePage({
                 if (categoryServices.length === 0 && categoryProducts.length === 0) return null;
                 
                 return (
-                  <div key={category.id} className="mb-6 last:mb-0">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                      <span className="mr-2">
+                  <div key={category.id} className="mb-8 last:mb-0 border-b-4 border-black pb-8 last:border-b-0 last:pb-0">
+                    <h3 className="text-2xl font-black text-black mb-4 flex items-center uppercase tracking-tight">
+                      <span className="mr-3 text-3xl">
                         {category.type === 'SERVICE' ? '🛎️' : '🛍️'}
                       </span>
-                      {category.name}
+                      {category.name.toUpperCase()}
                     </h3>
                     {category.description && (
-                      <p className="text-sm text-gray-600 mb-3">{category.description}</p>
+                      <p className="text-sm font-medium text-black mb-6 uppercase tracking-wide">{category.description}</p>
                     )}
                     
                     {/* Services in this category */}
                     {categoryServices.length > 0 && (
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         {categoryServices.map((service) => (
-                          <div key={service.id} className="p-4 bg-gray-50 rounded-lg">
+                          <div key={service.id} className="p-6 bg-white border-4 border-black hover:bg-yellow-400 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                             <div className="flex justify-between items-start">
                               <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900">{service.name}</h4>
+                                <h4 className="font-black text-xl uppercase tracking-tight text-black">{service.name}</h4>
                                 {service.description && (
-                                  <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                                  <p className="text-sm font-medium text-black mt-2">{service.description}</p>
                                 )}
-                                <p className="text-sm text-gray-500 mt-2">
-                                  Duration: {service.duration} minutes
+                                <p className="text-sm font-bold uppercase tracking-wide text-black mt-3">
+                                  DURATION: {service.duration} MINUTES
                                 </p>
                               </div>
-                              <div className="text-right ml-4">
-                                <p className="text-xl font-bold text-blue-600 mb-2">${service.price}</p>
+                              <div className="text-right ml-6 flex-shrink-0">
+                                <p className="text-4xl font-black mb-4">${service.price}</p>
                                 {resident.bookingEnabled && (
                                   <Link
                                     href={`/book/${resident.id}?serviceId=${service.id}`}
-                                    className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                                    className="inline-block bg-black text-white px-6 py-3 border-4 border-black hover:bg-white hover:text-black transition-colors text-sm font-black uppercase tracking-wider"
                                   >
-                                    Book Now
+                                    BOOK NOW
                                   </Link>
                                 )}
                               </div>
@@ -181,7 +181,7 @@ export default async function ResidentProfilePage({
                     
                     {/* Products in this category */}
                     {categoryProducts.length > 0 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {categoryProducts.map((product) => (
                           <ProductCard 
                             key={product.id} 
@@ -205,29 +205,29 @@ export default async function ResidentProfilePage({
               
               {/* Uncategorized Services */}
               {resident.services?.filter(s => !s.categoryId).length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Other Services</h3>
-                  <div className="space-y-3">
+                <div className="mb-8 border-b-4 border-black pb-8">
+                  <h3 className="text-2xl font-black text-black mb-6 uppercase tracking-tight">OTHER SERVICES</h3>
+                  <div className="space-y-4">
                     {resident.services.filter(s => !s.categoryId).map((service) => (
-                      <div key={service.id} className="p-4 bg-gray-50 rounded-lg">
+                      <div key={service.id} className="p-6 bg-white border-4 border-black hover:bg-yellow-400 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <h4 className="font-semibold text-gray-900">{service.name}</h4>
+                            <h4 className="font-black text-xl uppercase tracking-tight text-black">{service.name}</h4>
                             {service.description && (
-                              <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                              <p className="text-sm font-medium text-black mt-2">{service.description}</p>
                             )}
-                            <p className="text-sm text-gray-500 mt-2">
-                              Duration: {service.duration} minutes
+                            <p className="text-sm font-bold uppercase tracking-wide text-black mt-3">
+                              DURATION: {service.duration} MINUTES
                             </p>
                           </div>
-                          <div className="text-right ml-4">
-                            <p className="text-xl font-bold text-blue-600 mb-2">${service.price}</p>
+                          <div className="text-right ml-6 flex-shrink-0">
+                            <p className="text-4xl font-black mb-4">${service.price}</p>
                             {resident.bookingEnabled && (
                               <Link
                                 href={`/book/${resident.id}?serviceId=${service.id}`}
-                                className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                                className="inline-block bg-black text-white px-6 py-3 border-4 border-black hover:bg-white hover:text-black transition-colors text-sm font-black uppercase tracking-wider"
                               >
-                                Book Now
+                                BOOK NOW
                               </Link>
                             )}
                           </div>
@@ -241,8 +241,8 @@ export default async function ResidentProfilePage({
               {/* Uncategorized Products */}
               {resident.products?.filter(p => !p.categoryId).length > 0 && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Other Products</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h3 className="text-2xl font-black text-black mb-6 uppercase tracking-tight">OTHER PRODUCTS</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {resident.products.filter(p => !p.categoryId).map((product) => (
                       <ProductCard 
                         key={product.id} 
@@ -266,22 +266,24 @@ export default async function ResidentProfilePage({
 
           {/* Availability */}
           {resident.businessType !== 'PRODUCTS' && (
-            <div className="card mb-8">
-              <h2 className="text-2xl font-bold mb-4">Availability</h2>
+            <div className="bg-white border-8 border-black p-8 mb-8">
+              <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">AVAILABILITY</h2>
               {resident.availabilities.length === 0 ? (
-                <p className="text-gray-600">No availability set</p>
+                <div className="bg-yellow-400 border-4 border-black p-8 text-center">
+                  <p className="text-black font-black uppercase tracking-wider">NO AVAILABILITY SET</p>
+                </div>
               ) : (
                 <div className="space-y-4">
                   {resident.availabilities.map((avail) => (
                     <div
                       key={avail.id}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
+                      className="flex justify-between items-center p-6 bg-white border-4 border-black"
                     >
-                      <span className="font-semibold">
+                      <span className="font-black text-lg uppercase tracking-wider">
                         {dayNames[avail.dayOfWeek]}
                       </span>
-                      <span className="text-gray-600">
-                        {avail.startTime} - {avail.endTime}
+                      <span className="text-black font-black text-lg uppercase">
+                        {avail.startTime} — {avail.endTime}
                       </span>
                     </div>
                   ))}
@@ -292,23 +294,23 @@ export default async function ResidentProfilePage({
 
           {/* Reviews */}
           {resident.reviews && resident.reviews.length > 0 && (
-            <div className="card">
-              <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+            <div className="bg-white border-8 border-black p-8">
+              <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">CUSTOMER REVIEWS</h2>
               
               {/* Average Rating */}
-              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                <div className="flex items-center gap-4">
+              <div className="mb-8 p-8 bg-yellow-400 border-4 border-black">
+                <div className="flex items-center gap-8">
                   <div className="text-center">
-                    <p className="text-4xl font-bold text-blue-600">
+                    <p className="text-7xl font-black">
                       {(resident.reviews.reduce((sum, r) => sum + r.rating, 0) / resident.reviews.length).toFixed(1)}
                     </p>
-                    <div className="flex items-center justify-center mt-1">
+                    <div className="flex items-center justify-center mt-3 gap-1">
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-5 h-5 ${
+                          className={`w-8 h-8 ${
                             i < Math.round(resident.reviews.reduce((sum, r) => sum + r.rating, 0) / resident.reviews.length)
-                              ? 'text-yellow-400'
+                              ? 'text-black'
                               : 'text-gray-300'
                           }`}
                           fill="currentColor"
@@ -318,42 +320,42 @@ export default async function ResidentProfilePage({
                         </svg>
                       ))}
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {resident.reviews.length} {resident.reviews.length === 1 ? 'review' : 'reviews'}
+                    <p className="text-sm font-black uppercase tracking-widest mt-3">
+                      {resident.reviews.length} {resident.reviews.length === 1 ? 'REVIEW' : 'REVIEWS'}
                     </p>
                   </div>
                 </div>
               </div>
               
               {/* Individual Reviews */}
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {resident.reviews.map((review) => (
-                  <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                    <div className="flex items-start gap-3">
+                  <div key={review.id} className="border-b-4 border-black pb-6 last:border-b-0 last:pb-0">
+                    <div className="flex items-start gap-4">
                       {review.customer.image ? (
-                        <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                        <div className="relative w-16 h-16 border-4 border-black overflow-hidden flex-shrink-0">
                           <Image
                             src={review.customer.image}
                             alt={review.customer.name || 'Customer'}
                             fill
-                            className="object-cover"
+                            className="object-cover grayscale"
                           />
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                          <span className="text-blue-600 font-semibold">
+                        <div className="w-16 h-16 border-4 border-black bg-black flex items-center justify-center flex-shrink-0">
+                          <span className="text-yellow-400 font-black text-2xl">
                             {review.customer.name?.[0] || 'U'}
                           </span>
                         </div>
                       )}
                       <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold">{review.customer.name || 'Anonymous'}</h4>
-                          <div className="flex items-center">
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="font-black text-xl uppercase tracking-tight">{review.customer.name || 'ANONYMOUS'}</h4>
+                          <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
                               <svg
                                 key={i}
-                                className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                                className={`w-5 h-5 ${i < review.rating ? 'text-black' : 'text-gray-300'}`}
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -363,19 +365,19 @@ export default async function ResidentProfilePage({
                           </div>
                         </div>
                         {review.comment && (
-                          <p className="text-gray-700 text-sm">{review.comment}</p>
+                          <p className="text-black text-sm font-medium leading-relaxed">{review.comment}</p>
                         )}
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs font-bold uppercase tracking-wider text-black mt-3">
                           {new Date(review.createdAt).toLocaleDateString()}
                         </p>
                         
                         {/* Resident Response */}
                         {review.response && (
-                          <div className="mt-3 ml-4 p-3 bg-gray-50 rounded-lg">
-                            <p className="text-xs font-semibold text-gray-700 mb-1">
-                              Response from {resident.user.name}
+                          <div className="mt-4 ml-4 p-4 bg-yellow-400 border-4 border-black">
+                            <p className="text-xs font-black uppercase tracking-widest text-black mb-2">
+                              RESPONSE FROM {resident.user.name?.toUpperCase()}
                             </p>
-                            <p className="text-sm text-gray-600">{review.response}</p>
+                            <p className="text-sm font-medium text-black">{review.response}</p>
                           </div>
                         )}
                       </div>
@@ -389,22 +391,21 @@ export default async function ResidentProfilePage({
 
         {/* Sidebar */}
         <div>
-          <div className="card sticky top-24">
-            <div className="mb-6">
+          <div className="bg-white border-8 border-black p-8 sticky top-24">
+            <div className="mb-8 pb-8 border-b-4 border-black">
               {resident.user.image && (
-                <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+                <div className="relative w-full h-64 mb-6 border-4 border-black overflow-hidden">
                   <Image
                     src={resident.user.image}
                     alt={resident.user.name || "Profile"}
                     fill
-                    className="object-cover"
+                    className="object-cover grayscale"
                   />
                 </div>
               )}
-              <h3 className="text-xl font-bold mb-2">{resident.user.name}</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Member since{" "}
-                {new Date(resident.createdAt).toLocaleDateString()}
+              <h3 className="text-3xl font-black mb-3 uppercase tracking-tight">{resident.user.name}</h3>
+              <p className="text-sm font-bold uppercase tracking-wider text-black">
+                MEMBER SINCE {new Date(resident.createdAt).toLocaleDateString().toUpperCase()}
               </p>
             </div>
 
@@ -412,48 +413,48 @@ export default async function ResidentProfilePage({
             {resident.businessType === 'SERVICES' && resident.bookingEnabled && (
               <Link
                 href={`/book/${resident.id}`}
-                className="btn-primary w-full text-center block mb-3"
+                className="bg-black text-white px-8 py-5 border-4 border-black hover:bg-yellow-400 hover:text-black transition-colors w-full text-center block font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4"
               >
-                Book a Service
+                BOOK A SERVICE
               </Link>
             )}
 
             {resident.businessType === 'PRODUCTS' && (
-              <div className="space-y-3">
-                <p className="text-center text-gray-600 text-sm font-medium">
-                  Browse our products below
+              <div className="space-y-4">
+                <p className="text-center text-black text-sm font-black uppercase tracking-wide border-4 border-black p-4 bg-yellow-400">
+                  BROWSE OUR PRODUCTS BELOW
                 </p>
                 <Link
                   href={`/shop/${resident.id}`}
-                  className="btn-primary w-full text-center block"
+                  className="bg-black text-white px-8 py-5 border-4 border-black hover:bg-yellow-400 hover:text-black transition-colors w-full text-center block font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 >
-                  Shop Products
+                  SHOP PRODUCTS
                 </Link>
               </div>
             )}
 
             {resident.businessType === 'BOTH' && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {resident.bookingEnabled && (
                   <Link
                     href={`/book/${resident.id}`}
-                    className="btn-primary w-full text-center block"
+                    className="bg-black text-white px-8 py-5 border-4 border-black hover:bg-yellow-400 hover:text-black transition-colors w-full text-center block font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    Book a Service
+                    BOOK A SERVICE
                   </Link>
                 )}
                 <Link
                   href={`/shop/${resident.id}`}
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-semibold w-full text-center block"
+                  className="bg-white text-black px-8 py-5 border-4 border-black hover:bg-yellow-400 transition-colors w-full text-center block font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 >
-                  Shop Products
+                  SHOP PRODUCTS
                 </Link>
               </div>
             )}
 
             {!resident.bookingEnabled && resident.businessType === 'SERVICES' && (
-              <button disabled className="btn-secondary w-full opacity-50 cursor-not-allowed">
-                Bookings Disabled
+              <button disabled className="bg-gray-200 text-gray-500 px-8 py-5 border-4 border-black w-full font-black uppercase tracking-wider cursor-not-allowed">
+                BOOKINGS DISABLED
               </button>
             )}
           </div>

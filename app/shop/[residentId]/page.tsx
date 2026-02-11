@@ -127,8 +127,8 @@ export default function ShopPage({ params }: ShopPageProps) {
   const calculateShipping = () => {
     const subtotal = calculateSubtotal();
     if (subtotal === 0) return 0;
-    if (subtotal > 100) return 0; // Free shipping over $100
-    return 10; // Flat rate shipping
+    if (subtotal > 100) return 0;
+    return 10;
   };
 
   const calculateTotal = () => {
@@ -147,7 +147,6 @@ export default function ShopPage({ params }: ShopPageProps) {
     }
 
     try {
-      // Create order
       const orderResponse = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -167,7 +166,6 @@ export default function ShopPage({ params }: ShopPageProps) {
 
       const order = await orderResponse.json();
 
-      // Create Stripe checkout session for the order
       const checkoutResponse = await fetch("/api/checkout-products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -192,10 +190,10 @@ export default function ShopPage({ params }: ShopPageProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading shop...</p>
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="text-center border-8 border-black p-12 bg-yellow-400">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent animate-spin mx-auto mb-6"></div>
+          <p className="text-black font-black uppercase tracking-widest text-lg">LOADING SHOP...</p>
         </div>
       </div>
     );
@@ -203,14 +201,14 @@ export default function ShopPage({ params }: ShopPageProps) {
 
   if (!resident) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Shop Not Found</h2>
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center border-8 border-black bg-yellow-400 p-16">
+          <h2 className="text-4xl font-black mb-6 uppercase tracking-tight">SHOP NOT FOUND</h2>
           <button
             onClick={() => router.push("/residents")}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="bg-black text-white px-8 py-4 font-black uppercase tracking-wider hover:bg-white hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
-            Browse All Residents
+            BROWSE ALL RESIDENTS
           </button>
         </div>
       </div>
@@ -219,38 +217,38 @@ export default function ShopPage({ params }: ShopPageProps) {
 
   if (orderCreated && clientSecret) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 border-8 border-black p-8 bg-white">
             <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
               <EmbeddedCheckout />
             </EmbeddedCheckoutProvider>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-xl font-bold mb-4">Order Summary</h3>
-            <div className="space-y-4">
+          <div className="bg-yellow-400 border-8 border-black p-8 h-fit">
+            <h3 className="text-3xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-4">ORDER SUMMARY</h3>
+            <div className="space-y-6">
               {cart.map(item => {
                 const product = getCartItemDetails(item);
                 return product ? (
-                  <div key={item.productId} className="flex justify-between text-sm">
-                    <span>{product.name} x{item.quantity}</span>
-                    <span className="font-semibold">${(product.price * item.quantity).toFixed(2)}</span>
+                  <div key={item.productId} className="flex justify-between text-sm font-bold uppercase tracking-wide">
+                    <span>{product.name} ×{item.quantity}</span>
+                    <span className="font-black">${(product.price * item.quantity).toFixed(2)}</span>
                   </div>
                 ) : null;
               })}
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Subtotal</span>
+              <div className="border-t-4 border-black pt-6 space-y-3">
+                <div className="flex justify-between text-sm font-bold uppercase tracking-wide">
+                  <span>SUBTOTAL</span>
                   <span>${calculateSubtotal().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Shipping</span>
+                <div className="flex justify-between text-sm font-bold uppercase tracking-wide">
+                  <span>SHIPPING</span>
                   <span>${calculateShipping().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between font-bold text-lg border-t pt-2">
-                  <span>Total</span>
-                  <span className="text-blue-600">${calculateTotal().toFixed(2)}</span>
+                <div className="flex justify-between font-black text-2xl border-t-4 border-black pt-4 uppercase">
+                  <span>TOTAL</span>
+                  <span>${calculateTotal().toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -261,100 +259,106 @@ export default function ShopPage({ params }: ShopPageProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold mb-8">{resident.user.name}'s Shop</h1>
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-white">
+      <h1 className="text-6xl font-black mb-12 uppercase tracking-tight border-b-8 border-black pb-6">
+        {resident.user.name?.toUpperCase()}'S SHOP
+      </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Products */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-2xl font-bold mb-6">Products</h2>
+          <div className="bg-white border-8 border-black p-8">
+            <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">PRODUCTS</h2>
             
             {resident.products && resident.products.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {resident.products.map((product: Product) => (
-                  <div key={product.id} className="border rounded-lg p-4">
+                  <div key={product.id} className="border-4 border-black p-6 bg-white hover:bg-yellow-400 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                     {product.images && product.images.length > 0 && (
-                      <div className="relative w-full h-48 mb-3 rounded-lg overflow-hidden">
+                      <div className="relative w-full h-56 mb-4 border-4 border-black overflow-hidden">
                         <Image
                           src={product.images[0].url}
                           alt={product.name}
                           fill
-                          className="object-cover"
+                          className="object-cover grayscale"
                         />
                       </div>
                     )}
-                    <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                    <h3 className="font-black text-xl mb-2 uppercase tracking-tight">{product.name}</h3>
                     {product.description && (
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                      <p className="text-sm font-medium mb-4 line-clamp-2">{product.description}</p>
                     )}
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-4 pb-4 border-b-4 border-black">
                       <div>
-                        <p className="text-xl font-bold text-blue-600">${product.price}</p>
+                        <p className="text-3xl font-black">${product.price}</p>
                         {product.compareAtPrice && (
-                          <p className="text-sm text-gray-500 line-through">
+                          <p className="text-sm font-bold uppercase tracking-wide line-through opacity-60">
                             ${product.compareAtPrice}
                           </p>
                         )}
                       </div>
                       {product.trackInventory && (
-                        <p className="text-sm text-gray-600">
-                          {product.stock ? `${product.stock} in stock` : 'Out of stock'}
+                        <p className="text-sm font-bold uppercase tracking-wide border-4 border-black px-3 py-1 bg-white">
+                          {product.stock ? `${product.stock} IN STOCK` : 'OUT OF STOCK'}
                         </p>
                       )}
                     </div>
                     <button
                       onClick={() => addToCart(product.id)}
                       disabled={product.trackInventory && !product.stock}
-                      className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-black text-white px-6 py-3 border-4 border-black hover:bg-white hover:text-black transition-colors font-black uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Add to Cart
+                      ADD TO CART
                     </button>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-600">No products available</p>
+              <div className="text-center py-16 border-4 border-black bg-yellow-400">
+                <p className="text-black font-black uppercase tracking-wider text-xl">NO PRODUCTS AVAILABLE</p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Cart & Checkout */}
         <div>
-          <div className="bg-white rounded-lg shadow p-6 sticky top-24">
-            <h3 className="text-xl font-bold mb-4">Shopping Cart</h3>
+          <div className="bg-yellow-400 border-8 border-black p-8 sticky top-24">
+            <h3 className="text-3xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-4">SHOPPING CART</h3>
             
             {cart.length === 0 ? (
-              <p className="text-gray-600 mb-4">Your cart is empty</p>
+              <div className="text-center py-12 border-4 border-black bg-white">
+                <p className="text-black font-black uppercase tracking-wider">YOUR CART IS EMPTY</p>
+              </div>
             ) : (
               <>
-                <div className="space-y-3 mb-6">
+                <div className="space-y-4 mb-8">
                   {cart.map(item => {
                     const product = getCartItemDetails(item);
                     return product ? (
-                      <div key={item.productId} className="flex items-center gap-3 pb-3 border-b">
+                      <div key={item.productId} className="flex items-center gap-3 pb-4 border-b-4 border-black">
                         <div className="flex-1">
-                          <p className="font-semibold text-sm">{product.name}</p>
-                          <p className="text-blue-600 font-bold">${product.price}</p>
+                          <p className="font-black text-sm uppercase tracking-tight">{product.name}</p>
+                          <p className="font-black text-xl">${product.price}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                            className="w-7 h-7 border rounded flex items-center justify-center hover:bg-gray-100"
+                            className="w-10 h-10 border-4 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors font-black text-xl"
                           >
-                            -
+                            −
                           </button>
-                          <span className="w-8 text-center">{item.quantity}</span>
+                          <span className="w-12 text-center font-black text-xl">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                            className="w-7 h-7 border rounded flex items-center justify-center hover:bg-gray-100"
+                            className="w-10 h-10 border-4 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors font-black text-xl"
                           >
                             +
                           </button>
                         </div>
                         <button
                           onClick={() => removeFromCart(item.productId)}
-                          className="text-red-600 hover:text-red-700"
+                          className="w-10 h-10 border-4 border-black bg-black text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors font-black text-2xl"
                         >
                           ×
                         </button>
@@ -363,80 +367,82 @@ export default function ShopPage({ params }: ShopPageProps) {
                   })}
                 </div>
 
-                <div className="space-y-2 mb-6 pb-6 border-b">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
+                <div className="space-y-3 mb-8 pb-8 border-b-4 border-black">
+                  <div className="flex justify-between text-sm font-bold uppercase tracking-wide">
+                    <span>SUBTOTAL</span>
                     <span>${calculateSubtotal().toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Shipping</span>
+                  <div className="flex justify-between text-sm font-bold uppercase tracking-wide">
+                    <span>SHIPPING</span>
                     <span>{calculateShipping() === 0 ? 'FREE' : `$${calculateShipping().toFixed(2)}`}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-lg pt-2 border-t">
-                    <span>Total</span>
-                    <span className="text-blue-600">${calculateTotal().toFixed(2)}</span>
+                  <div className="flex justify-between font-black text-2xl pt-4 border-t-4 border-black uppercase">
+                    <span>TOTAL</span>
+                    <span>${calculateTotal().toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="space-y-3 mb-6">
-                  <h4 className="font-semibold">Shipping Information</h4>
+                <div className="space-y-4 mb-8">
+                  <h4 className="font-black text-lg uppercase tracking-wider border-b-4 border-black pb-3">SHIPPING INFORMATION</h4>
                   <input
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="FULL NAME"
                     value={shippingAddress.name}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, name: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg text-sm"
+                    className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
                   />
                   <input
                     type="text"
-placeholder="Address"
-value={shippingAddress.address}
-onChange={(e) => setShippingAddress({ ...shippingAddress, address: e.target.value })}
-className="w-full px-3 py-2 border rounded-lg text-sm"
-/>
-<div className="grid grid-cols-2 gap-2">
-<input
-type="text"
-placeholder="City"
-value={shippingAddress.city}
-onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
-className="w-full px-3 py-2 border rounded-lg text-sm"
-/>
-<input
-type="text"
-placeholder="State"
-value={shippingAddress.state}
-onChange={(e) => setShippingAddress({ ...shippingAddress, state: e.target.value })}
-className="w-full px-3 py-2 border rounded-lg text-sm"
-/>
-</div>
-<div className="grid grid-cols-2 gap-2">
-<input
-type="text"
-placeholder="ZIP"
-value={shippingAddress.zip}
-onChange={(e) => setShippingAddress({ ...shippingAddress, zip: e.target.value })}
-className="w-full px-3 py-2 border rounded-lg text-sm"
-/>
-<input
-type="text"
-placeholder="Country"
-value={shippingAddress.country}
-onChange={(e) => setShippingAddress({ ...shippingAddress, country: e.target.value })}
-className="w-full px-3 py-2 border rounded-lg text-sm"
-/>
-</div>
-</div>            <button
-              onClick={handleCheckout}
-              className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-            >
-              Proceed to Checkout
-            </button>
-          </>
-        )}
+                    placeholder="ADDRESS"
+                    value={shippingAddress.address}
+                    onChange={(e) => setShippingAddress({ ...shippingAddress, address: e.target.value })}
+                    className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                  />
+                  <div className="grid grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      placeholder="CITY"
+                      value={shippingAddress.city}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
+                      className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                    />
+                    <input
+                      type="text"
+                      placeholder="STATE"
+                      value={shippingAddress.state}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, state: e.target.value })}
+                      className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      placeholder="ZIP"
+                      value={shippingAddress.zip}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, zip: e.target.value })}
+                      className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                    />
+                    <input
+                      type="text"
+                      placeholder="COUNTRY"
+                      value={shippingAddress.country}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, country: e.target.value })}
+                      className="w-full px-4 py-3 border-4 border-black text-sm font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  className="w-full bg-black text-white px-8 py-5 font-black uppercase tracking-wider hover:bg-white hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"
+                >
+                  PROCEED TO CHECKOUT
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-);
+  );
 }

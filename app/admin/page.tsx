@@ -83,71 +83,80 @@ export default function AdminDashboard() {
   }
 
   if (status === "loading" || loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="text-center border-8 border-black p-12 bg-yellow-400">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent animate-spin mx-auto mb-6"></div>
+          <p className="text-black font-black uppercase tracking-widest text-lg">LOADING ADMIN DASHBOARD...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-white">
+      <div className="border-8 border-black p-12 bg-black text-white mb-12">
+        <h1 className="text-6xl font-black uppercase tracking-tight">ADMIN DASHBOARD</h1>
+      </div>
 
       {/* Tabs */}
-      <div className="flex space-x-4 mb-8 border-b border-gray-200">
+      <div className="flex mb-12 border-8 border-black bg-white">
         <button
           onClick={() => setActiveTab("stats")}
-          className={`px-4 py-2 font-medium ${
+          className={`flex-1 px-8 py-6 font-black uppercase text-sm tracking-wider border-r-4 border-black last:border-r-0 transition-colors ${
             activeTab === "stats"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-600"
+              ? "bg-yellow-400 text-black"
+              : "bg-white text-black hover:bg-gray-100"
           }`}
         >
-          Stats
+          STATS
         </button>
         <button
           onClick={() => setActiveTab("pending")}
-          className={`px-4 py-2 font-medium ${
+          className={`flex-1 px-8 py-6 font-black uppercase text-sm tracking-wider border-r-4 border-black last:border-r-0 transition-colors ${
             activeTab === "pending"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-600"
+              ? "bg-yellow-400 text-black"
+              : "bg-white text-black hover:bg-gray-100"
           }`}
         >
-          Pending Residents ({pendingResidents.length})
+          PENDING ({pendingResidents.length})
         </button>
         <button
           onClick={() => setActiveTab("residents")}
-          className={`px-4 py-2 font-medium ${
+          className={`flex-1 px-8 py-6 font-black uppercase text-sm tracking-wider transition-colors ${
             activeTab === "residents"
-              ? "border-b-2 border-blue-600 text-blue-600"
-              : "text-gray-600"
+              ? "bg-yellow-400 text-black"
+              : "bg-white text-black hover:bg-gray-100"
           }`}
         >
-          All Residents ({allResidents.length})
+          ALL RESIDENTS ({allResidents.length})
         </button>
       </div>
 
       {/* Stats Tab */}
       {activeTab === "stats" && stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="card">
-            <p className="text-gray-600 mb-2">Total Users</p>
-            <p className="text-4xl font-bold text-blue-600">
+          <div className="bg-white border-8 border-black p-8">
+            <p className="text-xs font-black uppercase tracking-widest mb-4">TOTAL USERS</p>
+            <p className="text-6xl font-black">
               {stats.totalUsers}
             </p>
           </div>
-          <div className="card">
-            <p className="text-gray-600 mb-2">Approved Residents</p>
-            <p className="text-4xl font-bold text-green-600">
+          <div className="bg-white border-8 border-black p-8">
+            <p className="text-xs font-black uppercase tracking-widest mb-4">APPROVED RESIDENTS</p>
+            <p className="text-6xl font-black">
               {stats.totalResidents}
             </p>
           </div>
-          <div className="card">
-            <p className="text-gray-600 mb-2">Total Bookings</p>
-            <p className="text-4xl font-bold text-purple-600">
+          <div className="bg-white border-8 border-black p-8">
+            <p className="text-xs font-black uppercase tracking-widest mb-4">TOTAL BOOKINGS</p>
+            <p className="text-6xl font-black">
               {stats.totalBookings}
             </p>
           </div>
-          <div className="card">
-            <p className="text-gray-600 mb-2">Platform Revenue</p>
-            <p className="text-4xl font-bold text-yellow-600">
+          <div className="bg-white border-8 border-black p-8">
+            <p className="text-xs font-black uppercase tracking-widest mb-4">PLATFORM REVENUE</p>
+            <p className="text-6xl font-black">
               ${stats.totalRevenue.toFixed(2)}
             </p>
           </div>
@@ -156,30 +165,34 @@ export default function AdminDashboard() {
 
       {/* Pending Residents Tab */}
       {activeTab === "pending" && (
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-6">Pending Resident Approvals</h2>
+        <div className="bg-white border-8 border-black p-8">
+          <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">
+            PENDING RESIDENT APPROVALS
+          </h2>
 
           {pendingResidents.length === 0 ? (
-            <p className="text-gray-600">No pending residents</p>
+            <div className="text-center py-16 border-4 border-black bg-yellow-400">
+              <p className="text-black font-black uppercase tracking-wider text-xl">NO PENDING RESIDENTS</p>
+            </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {pendingResidents.map((resident) => (
                 <div
                   key={resident.id}
-                  className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
+                  className="flex justify-between items-center p-6 border-4 border-black bg-white hover:bg-yellow-400 transition-colors"
                 >
                   <div>
-                    <h3 className="font-bold">{resident.user.name}</h3>
-                    <p className="text-sm text-gray-600">{resident.user.email}</p>
-                    <p className="text-sm text-gray-600">
-                      ${resident.price}/hour
+                    <h3 className="font-black text-xl uppercase tracking-tight mb-2">{resident.user.name}</h3>
+                    <p className="text-sm font-bold uppercase tracking-wide mb-1">{resident.user.email}</p>
+                    <p className="text-2xl font-black">
+                      ${resident.price}/HOUR
                     </p>
                   </div>
                   <button
                     onClick={() => handleApprove(resident.id)}
-                    className="btn-primary"
+                    className="bg-black text-white px-8 py-4 font-black uppercase tracking-wider hover:bg-white hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    Approve
+                    APPROVE
                   </button>
                 </div>
               ))}
@@ -190,68 +203,72 @@ export default function AdminDashboard() {
 
       {/* All Residents Tab */}
       {activeTab === "residents" && (
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-6">All Residents</h2>
+        <div className="bg-white border-8 border-black p-8">
+          <h2 className="text-4xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-6">
+            ALL RESIDENTS
+          </h2>
 
           {allResidents.length === 0 ? (
-            <p className="text-gray-600">No residents</p>
+            <div className="text-center py-16 border-4 border-black bg-yellow-400">
+              <p className="text-black font-black uppercase tracking-wider text-xl">NO RESIDENTS</p>
+            </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
+              <table className="w-full border-collapse">
+                <thead className="bg-black text-white">
                   <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Name
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest border-r-4 border-white">
+                      NAME
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Email
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest border-r-4 border-white">
+                      EMAIL
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Price
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest border-r-4 border-white">
+                      PRICE
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Status
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest border-r-4 border-white">
+                      STATUS
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Bookings
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest border-r-4 border-white">
+                      BOOKINGS
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Actions
+                    <th className="px-6 py-4 text-left text-xs font-black uppercase tracking-widest">
+                      ACTIONS
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-white">
                   {allResidents.map((resident) => (
-                    <tr key={resident.id} className="border-t border-gray-200">
-                      <td className="px-6 py-4 font-semibold">
+                    <tr key={resident.id} className="border-b-4 border-black hover:bg-yellow-400 transition-colors">
+                      <td className="px-6 py-4 font-black uppercase text-sm tracking-tight border-r-4 border-black">
                         {resident.user.name}
                       </td>
-                      <td className="px-6 py-4">{resident.user.email}</td>
-                      <td className="px-6 py-4">${resident.price}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 font-bold text-sm border-r-4 border-black">{resident.user.email}</td>
+                      <td className="px-6 py-4 font-black text-lg border-r-4 border-black">${resident.price}</td>
+                      <td className="px-6 py-4 border-r-4 border-black">
                         <span
-                          className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          className={`px-4 py-2 text-xs font-black uppercase tracking-widest border-4 border-black inline-block ${
                             resident.approved
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
+                              ? "bg-white text-black"
+                              : "bg-yellow-400 text-black"
                           }`}
                         >
-                          {resident.approved ? "Approved" : "Pending"}
+                          {resident.approved ? "APPROVED" : "PENDING"}
                         </span>
                       </td>
-                      <td className="px-6 py-4">{resident.bookings.length}</td>
+                      <td className="px-6 py-4 font-black text-2xl border-r-4 border-black">{resident.bookings.length}</td>
                       <td className="px-6 py-4">
                         <button
                           onClick={() =>
                             handleFeature(resident.id, resident.featured)
                           }
-                          className={`px-3 py-1 rounded text-sm font-semibold ${
+                          className={`px-4 py-2 text-xs font-black uppercase tracking-widest border-4 border-black transition-colors ${
                             resident.featured
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-gray-200 text-gray-800"
+                              ? "bg-yellow-400 text-black hover:bg-white"
+                              : "bg-white text-black hover:bg-yellow-400"
                           }`}
                         >
-                          {resident.featured ? "Featured" : "Feature"}
+                          {resident.featured ? "★ FEATURED" : "FEATURE"}
                         </button>
                       </td>
                     </tr>

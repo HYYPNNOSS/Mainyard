@@ -164,10 +164,10 @@ export default function BookingPage({ params }: BookingPageProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading booking page...</p>
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="text-center border-8 border-black p-12 bg-yellow-400">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent animate-spin mx-auto mb-6"></div>
+          <p className="text-black font-black uppercase tracking-widest text-lg">LOADING BOOKING PAGE...</p>
         </div>
       </div>
     );
@@ -175,15 +175,15 @@ export default function BookingPage({ params }: BookingPageProps) {
 
   if (!resident) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Resident Not Found</h2>
-          <p className="text-gray-600 mb-6">We couldn't find the resident you're trying to book.</p>
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center border-8 border-black bg-yellow-400 p-16">
+          <h2 className="text-4xl font-black mb-6 uppercase tracking-tight">RESIDENT NOT FOUND</h2>
+          <p className="text-black mb-8 font-bold uppercase tracking-wide">WE COULDN'T FIND THE RESIDENT YOU'RE TRYING TO BOOK.</p>
           <button
             onClick={() => router.push("/residents")}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="bg-black text-white px-8 py-4 font-black uppercase tracking-wider hover:bg-white hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
-            Browse All Residents
+            BROWSE ALL RESIDENTS
           </button>
         </div>
       </div>
@@ -192,50 +192,50 @@ export default function BookingPage({ params }: BookingPageProps) {
 
   if (bookingCreated && clientSecret) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 border-8 border-black p-8 bg-white">
             <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
               <EmbeddedCheckout />
             </EmbeddedCheckoutProvider>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-xl font-bold mb-4">Booking Summary</h3>
-            <div className="space-y-4">
+          <div className="bg-yellow-400 border-8 border-black p-8 h-fit">
+            <h3 className="text-3xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-4">BOOKING SUMMARY</h3>
+            <div className="space-y-6">
               <div>
-                <p className="text-gray-600">Professional</p>
-                <p className="font-semibold">{resident.user.name}</p>
+                <p className="text-xs font-black uppercase tracking-widest mb-2">PROFESSIONAL</p>
+                <p className="font-black text-xl uppercase">{resident.user.name}</p>
               </div>
-              <div>
-                <p className="text-gray-600">Services</p>
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-3">SERVICES</p>
                 {selectedServices.map(serviceId => {
                   const service = resident.services.find((s: Service) => s.id === serviceId);
                   return service ? (
-                    <div key={service.id} className="flex justify-between text-sm mt-1">
+                    <div key={service.id} className="flex justify-between text-sm font-bold mb-2 uppercase tracking-wide">
                       <span>{service.name}</span>
-                      <span className="font-semibold">${service.price}</span>
+                      <span className="font-black">${service.price}</span>
                     </div>
                   ) : null;
                 })}
               </div>
-              <div>
-                <p className="text-gray-600">Date</p>
-                <p className="font-semibold">
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">DATE</p>
+                <p className="font-black text-lg uppercase">
                   {new Date(selectedDate).toLocaleDateString()}
                 </p>
               </div>
-              <div>
-                <p className="text-gray-600">Time</p>
-                <p className="font-semibold">{selectedSlot}</p>
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">TIME</p>
+                <p className="font-black text-lg uppercase">{selectedSlot}</p>
               </div>
-              <div>
-                <p className="text-gray-600">Duration</p>
-                <p className="font-semibold">{getTotalDuration()} minutes</p>
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">DURATION</p>
+                <p className="font-black text-lg uppercase">{getTotalDuration()} MINUTES</p>
               </div>
-              <div className="border-t pt-4">
-                <p className="text-gray-600">Total Amount</p>
-                <p className="text-2xl font-bold text-blue-600">
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-3">TOTAL AMOUNT</p>
+                <p className="text-5xl font-black">
                   ${calculateTotal()}
                 </p>
               </div>
@@ -247,97 +247,99 @@ export default function BookingPage({ params }: BookingPageProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold mb-8">Book {resident.user.name}</h1>
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-white">
+      <h1 className="text-6xl font-black mb-12 uppercase tracking-tight border-b-8 border-black pb-6">
+        BOOK {resident.user.name?.toUpperCase()}
+      </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Booking Form */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 className="text-2xl font-bold mb-6">Select Services</h2>
+          <div className="bg-white border-8 border-black p-8 mb-8">
+            <h2 className="text-3xl font-black mb-8 uppercase tracking-tight">SELECT SERVICES</h2>
             
             {resident.services && resident.services.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {resident.services.map((service: Service) => (
                   <div
                     key={service.id}
                     onClick={() => toggleService(service.id)}
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    className={`p-6 border-4 cursor-pointer transition-all ${
                       selectedServices.includes(service.id)
-                        ? 'border-blue-600 bg-blue-50'
-                        : 'border-gray-200 hover:border-blue-300'
+                        ? 'border-black bg-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+                        : 'border-black bg-white hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
                     }`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           <input
                             type="checkbox"
                             checked={selectedServices.includes(service.id)}
                             onChange={() => {}}
-                            className="w-5 h-5 text-blue-600 rounded"
+                            className="w-6 h-6 border-4 border-black accent-black"
                           />
                           <div>
-                            <h4 className="font-semibold text-lg">{service.name}</h4>
+                            <h4 className="font-black text-xl uppercase tracking-tight">{service.name}</h4>
                             {service.description && (
-                              <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                              <p className="text-sm text-black mt-2 font-medium">{service.description}</p>
                             )}
-                            <p className="text-sm text-gray-500 mt-2">
-                              Duration: {service.duration} minutes
+                            <p className="text-sm text-black mt-3 font-bold uppercase tracking-wide">
+                              DURATION: {service.duration} MINUTES
                             </p>
                           </div>
                         </div>
                       </div>
-                      <div className="text-right ml-4">
-                        <p className="text-xl font-bold text-blue-600">${service.price}</p>
+                      <div className="text-right ml-6">
+                        <p className="text-3xl font-black">${service.price}</p>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-600">No services available</p>
+              <p className="text-black font-bold uppercase tracking-wide">NO SERVICES AVAILABLE</p>
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-2xl font-bold mb-6">Select Date & Time</h2>
+          <div className="bg-white border-8 border-black p-8">
+            <h2 className="text-3xl font-black mb-8 uppercase tracking-tight">SELECT DATE & TIME</h2>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Date Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Date
+                <label className="block text-sm font-black uppercase tracking-widest mb-4">
+                  SELECT DATE
                 </label>
                 <input
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
                   min={new Date().toISOString().split("T")[0]}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-5 py-4 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black uppercase"
                 />
               </div>
 
               {/* Time Slot Selection */}
               {selectedDate && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Time Slot
+                  <label className="block text-sm font-black uppercase tracking-widest mb-4">
+                    SELECT TIME SLOT
                   </label>
                   {availableSlots.length === 0 ? (
-                    <p className="text-gray-600">
-                      No available slots for this date
+                    <p className="text-black font-bold uppercase tracking-wide border-4 border-black bg-yellow-400 p-6">
+                      NO AVAILABLE SLOTS FOR THIS DATE
                     </p>
                   ) : (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-4">
                       {availableSlots.map((slot) => (
                         <button
                           key={slot}
                           onClick={() => setSelectedSlot(slot)}
-                          className={`p-3 rounded-lg border-2 font-semibold transition-colors ${
+                          className={`p-4 border-4 border-black font-black uppercase tracking-wide transition-all ${
                             selectedSlot === slot
-                              ? "border-blue-600 bg-blue-50 text-blue-600"
-                              : "border-gray-200 hover:border-blue-300"
+                              ? "bg-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                              : "bg-white hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                           }`}
                         >
                           {slot}
@@ -352,33 +354,33 @@ export default function BookingPage({ params }: BookingPageProps) {
               <button
                 onClick={handleBooking}
                 disabled={selectedServices.length === 0 || !selectedDate || !selectedSlot}
-                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-black text-white px-8 py-5 font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-colors border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed text-lg"
               >
-                Continue to Payment
+                CONTINUE TO PAYMENT
               </button>
             </div>
           </div>
         </div>
 
         {/* Summary */}
-        <div className="bg-white rounded-lg shadow p-6 h-fit sticky top-24">
-          <h3 className="text-xl font-bold mb-4">Booking Summary</h3>
-          <div className="space-y-4">
+        <div className="bg-yellow-400 border-8 border-black p-8 h-fit sticky top-24">
+          <h3 className="text-3xl font-black mb-8 uppercase tracking-tight border-b-4 border-black pb-4">BOOKING SUMMARY</h3>
+          <div className="space-y-6">
             <div>
-              <p className="text-gray-600">Professional</p>
-              <p className="font-semibold">{resident.user.name}</p>
+              <p className="text-xs font-black uppercase tracking-widest mb-2">PROFESSIONAL</p>
+              <p className="font-black text-xl uppercase">{resident.user.name}</p>
             </div>
             
             {selectedServices.length > 0 && (
-              <div>
-                <p className="text-gray-600 mb-2">Selected Services</p>
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-3">SELECTED SERVICES</p>
                 <div className="space-y-2">
                   {selectedServices.map(serviceId => {
                     const service = resident.services.find((s: Service) => s.id === serviceId);
                     return service ? (
-                      <div key={service.id} className="flex justify-between text-sm">
+                      <div key={service.id} className="flex justify-between text-sm font-bold uppercase tracking-wide">
                         <span>{service.name}</span>
-                        <span className="font-semibold">${service.price}</span>
+                        <span className="font-black">${service.price}</span>
                       </div>
                     ) : null;
                   })}
@@ -387,14 +389,14 @@ export default function BookingPage({ params }: BookingPageProps) {
             )}
 
             {selectedServices.length > 0 && (
-              <div className="border-t pt-3">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-gray-600">Total Duration</p>
-                  <p className="font-semibold">{getTotalDuration()} min</p>
+              <div className="border-t-4 border-black pt-6">
+                <div className="flex justify-between items-center mb-3">
+                  <p className="text-xs font-black uppercase tracking-widest">TOTAL DURATION</p>
+                  <p className="font-black text-lg">{getTotalDuration()} MIN</p>
                 </div>
                 <div className="flex justify-between items-center">
-                  <p className="text-gray-600">Total Price</p>
-                  <p className="text-2xl font-bold text-blue-600">
+                  <p className="text-xs font-black uppercase tracking-widest">TOTAL PRICE</p>
+                  <p className="text-4xl font-black">
                     ${calculateTotal()}
                   </p>
                 </div>
@@ -402,17 +404,17 @@ export default function BookingPage({ params }: BookingPageProps) {
             )}
             
             {selectedDate && (
-              <div className="border-t pt-3">
-                <p className="text-gray-600">Selected Date</p>
-                <p className="font-semibold">
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">SELECTED DATE</p>
+                <p className="font-black text-lg uppercase">
                   {new Date(selectedDate).toLocaleDateString()}
                 </p>
               </div>
             )}
             {selectedSlot && (
-              <div>
-                <p className="text-gray-600">Selected Time</p>
-                <p className="font-semibold">{selectedSlot}</p>
+              <div className="border-t-4 border-black pt-6">
+                <p className="text-xs font-black uppercase tracking-widest mb-2">SELECTED TIME</p>
+                <p className="font-black text-lg uppercase">{selectedSlot}</p>
               </div>
             )}
           </div>

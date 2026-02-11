@@ -10,13 +10,13 @@ import {
 } from "@/server/actions/residentActions";
 
 const DAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
 ];
 
 export default function AvailabilityPage() {
@@ -65,7 +65,6 @@ export default function AvailabilityPage() {
     try {
       await setAvailability(dayOfWeek, startTime, endTime);
 
-      // Update local state
       const existingIndex = availabilities.findIndex(
         (a) => a.dayOfWeek === dayOfWeek
       );
@@ -112,26 +111,35 @@ export default function AvailabilityPage() {
   }
 
   if (status === "loading" || loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="text-center border-8 border-black p-12 bg-yellow-400">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent animate-spin mx-auto mb-6"></div>
+          <p className="text-black font-black uppercase tracking-widest text-lg">LOADING AVAILABILITY...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold mb-8">Manage Availability</h1>
+    <div className="max-w-5xl mx-auto px-6 py-16 bg-white">
+      <div className="border-8 border-black p-12 bg-black text-white mb-12">
+        <h1 className="text-6xl font-black uppercase tracking-tight">MANAGE AVAILABILITY</h1>
+      </div>
 
       {message && (
         <div
-          className={`mb-6 p-4 rounded-lg ${
+          className={`mb-8 p-6 border-8 border-black ${
             message.includes("updated") || message.includes("removed")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
+              ? "bg-white text-black"
+              : "bg-yellow-400 text-black"
           }`}
         >
-          {message}
+          <p className="font-black uppercase tracking-wide">{message}</p>
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {DAYS.map((day, index) => {
           const availability = availabilities.find(
             (a) => a.dayOfWeek === index
@@ -150,12 +158,12 @@ export default function AvailabilityPage() {
         })}
       </div>
 
-      <div className="mt-8">
+      <div className="mt-12">
         <button
           onClick={() => router.back()}
-          className="btn-secondary"
+          className="bg-white text-black px-8 py-5 font-black uppercase tracking-wider hover:bg-gray-100 transition-colors border-4 border-black"
         >
-          Back to Dashboard
+          BACK TO DASHBOARD
         </button>
       </div>
     </div>
@@ -183,50 +191,50 @@ function AvailabilityRow({
   const [endTime, setEndTime] = useState(availability?.endTime || "17:00");
 
   return (
-    <div className="card flex items-center gap-4">
-      <div className="w-24">
-        <p className="font-semibold">{day}</p>
+    <div className="bg-white border-8 border-black p-6 flex flex-col md:flex-row items-start md:items-center gap-6">
+      <div className="w-full md:w-32">
+        <p className="font-black text-xl uppercase tracking-tight">{day}</p>
       </div>
 
-      <div className="flex-1 flex gap-4 items-center">
-        <div>
-          <label className="text-sm text-gray-600">Start Time</label>
+      <div className="flex-1 flex flex-col sm:flex-row gap-6">
+        <div className="flex-1">
+          <label className="block text-xs font-black uppercase tracking-widest mb-3">START TIME</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="input"
+            className="w-full px-4 py-3 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black"
             disabled={disabled}
           />
         </div>
 
-        <div>
-          <label className="text-sm text-gray-600">End Time</label>
+        <div className="flex-1">
+          <label className="block text-xs font-black uppercase tracking-widest mb-3">END TIME</label>
           <input
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="input"
+            className="w-full px-4 py-3 border-4 border-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow font-bold text-black"
             disabled={disabled}
           />
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-3 w-full md:w-auto">
         <button
           onClick={() => onSet(dayOfWeek, startTime, endTime)}
           disabled={disabled}
-          className="btn-primary"
+          className="flex-1 md:flex-none bg-black text-white px-8 py-3 font-black uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-colors border-4 border-black disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Save
+          SAVE
         </button>
         {availability && (
           <button
             onClick={() => onRemove(dayOfWeek)}
             disabled={disabled}
-            className="btn-danger"
+            className="flex-1 md:flex-none bg-white text-black px-8 py-3 font-black uppercase tracking-wider hover:bg-yellow-400 transition-colors border-4 border-black disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Remove
+            REMOVE
           </button>
         )}
       </div>
