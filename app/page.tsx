@@ -100,7 +100,7 @@ export default function MainyardLanding() {
     {
       name: "SARAH JOHNSON",
       role: "WELLNESS COACH",
-      text: "Mainyard transformed how I run my business. I now offer both coaching sessions and wellness products in one place.",
+      text: "Openyard transformed how I run my business. I now offer both coaching sessions and wellness products in one place.",
       rating: 5
     },
     {
@@ -140,7 +140,7 @@ export default function MainyardLanding() {
     }
     return [
       {
-        q: "WHAT CAN I FIND ON MAINYARD?",
+        q: "WHAT CAN I FIND ON OPENYARD?",
         a: "You can book professional services like coaching, wellness sessions, consultations, and shop physical or digital products from local professionals."
       },
       {

@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
-            <h3 className="text-2xl font-black mb-6 uppercase tracking-tight">MAINYARD</h3>
+            <h3 className="text-2xl font-black mb-6 uppercase tracking-tight">OPENYARD</h3>
             <p className="text-white font-bold uppercase text-sm leading-relaxed tracking-wide">
               CONNECT WITH CURATED PROFESSIONALS IN YOUR COMMUNITY.
             </p>
