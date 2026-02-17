@@ -17,6 +17,7 @@
     "@stripe/stripe-js": "^4.10.0",
     "autoprefixer": "^10.4.20",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.562.0",
