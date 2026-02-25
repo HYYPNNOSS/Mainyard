@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Booking Platform",
-  description: "Curated community booking platform",
+  description: "Curated community booking platform.",
 };
 
 export default async function RootLayout({
